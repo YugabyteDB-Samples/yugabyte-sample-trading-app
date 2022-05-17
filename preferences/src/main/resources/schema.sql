@@ -1,5 +1,5 @@
 -- auto-generated definition
-create sequence hibernate_sequence;
+create sequence if not exists hibernate_sequence;
 
 create table if not exists public.cpref (
     id bigint primary key not null,
