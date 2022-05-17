@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PreferencesApplication {
 
 	public static void main(String[] args) {
+		//Test Git
 		SpringApplication.run(PreferencesApplication.class, args);
 	}
 
