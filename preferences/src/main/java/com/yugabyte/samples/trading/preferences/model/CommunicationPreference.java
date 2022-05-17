@@ -1,7 +1,6 @@
 package com.yugabyte.samples.trading.preferences.model;
 
 
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name="cpref")
 @Data
 @NoArgsConstructor
-public class CommunicationPreferences {
+public class CommunicationPreference {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
