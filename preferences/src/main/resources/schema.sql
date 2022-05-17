@@ -1,3 +1,6 @@
+-- auto-generated definition
+create sequence hibernate_sequence;
+
 create table if not exists public.cpref (
     id bigint primary key not null,
     customer_id character varying(255),
