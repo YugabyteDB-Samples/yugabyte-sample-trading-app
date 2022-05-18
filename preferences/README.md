@@ -1,6 +1,5 @@
 ## Trading App / Preferences Module
 
-
 ## Get Started
 
 1. Checkout
@@ -45,6 +44,24 @@
 
 7. Package as a docker container
 
-    ```bash
+   ```bash
     ./mvnw spring-boot:build-image
     ```
+
+8. Frontend development
+
+   ```bash
+   cd src/main/frontend
+   npm run start
+   ```
+
+## Links
+
+| Link                                | Description                                                                         |
+|-------------------------------------|-------------------------------------------------------------------------------------|
+| http://localhost:8080               | Bundled UI - Only updated on restarting Java App                                    |
+| http://localhost:3000               | Live Development UI - Make change in the JS file and you will see the changes here  |
+| http://localhost:8080/actuator      | Monitoring URL root                                                                 |
+| http://localhost:8080/api-docs      | Open API v3.0 Spec ( JSON )                                                         |
+| http://localhost:8080/api-docs.yaml | Open API v3.0 Spec ( YAML )                                                         |
+| http://localhost:8080/api-docs.html | Open API / Swagger UI                                                               |
