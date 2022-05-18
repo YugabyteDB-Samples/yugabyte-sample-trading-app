@@ -1,55 +1,52 @@
 import React, { Component } from 'react';
+import { SplitButton, Dropdown } from 'react-bootstrap';
 
 class ThemeSwitcher extends Component {
 
   state = { theme: null }
 
-  resetTheme = evt => {
-    evt.preventDefault();
-    this.setState({ theme: null });
-  }
-
   chooseTheme = (theme, evt) => {
     evt.preventDefault();
+    if (theme.toLowerCase() === 'reset') { theme = null }
     this.setState({ theme });
   }
 
   render() {
-
     const { theme } = this.state;
-    const themeClass = theme ? theme.toLowerCase() : 'secondary';
+    const themeClass = theme ? theme.toLowerCase() : 'default';
+
+    const parentContainerStyles = {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      display: 'table'
+    };
+
+    const subContainerStyles = {
+      position: 'relative',
+      height: '100%',
+      width: '100%',
+      display: 'table-cell',
+    };
 
     return (
-      <div className="d-flex flex-wrap justify-content-center position-absolute w-100 h-100 align-items-center align-content-center">
+      <div style={parentContainerStyles}>
+        <div style={subContainerStyles}>
 
-        <span className={`h1 mb-4 w-100 text-center text-${themeClass}`}>{ theme || 'Default' }</span>
+          <span className={`h1 center-block text-center text-${theme ? themeClass : 'muted'}`} style={{ marginBottom: 25 }}>{theme || 'Default'}</span>
 
-        <div className="btn-group">
-
-          <button type="button" className={`btn btn-${themeClass} btn-lg`}>{ theme || 'Choose' } Theme</button>
-
-          <button type="button" className={`btn btn-${themeClass} btn-lg dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span className="sr-only">Toggle Theme Dऊऊropdown</span>
-          </button>
-
-          <div className="dropdown-menu">
-
-            <a className="dropdown-item" href="#" onClick={e => this.chooseTheme('Primary', e)}>Primary Theme</a>
-            <a className="dropdown-item" href="#" onClick={e => this.chooseTheme('Danger', e)}>Danger Theme</a>
-            <a className="dropdown-item" href="#" onClick={e => this.chooseTheme('Success', e)}>Success Theme</a>
-
-            <div className="dropdown-divider"></div>
-
-            <a className="dropdown-item" href="#" onClick={this.resetTheme}>Default Theme</a>
+          <div className="center-block text-center">
+            <SplitButton bsSize="large" bsStyle={themeClass} title={`${theme || 'Default Block'} Theme`}>
+              <Dropdown.Item eventKey="Primary Block" onSelect={this.chooseTheme}>Primary Theme</Dropdown.Item>
+              <Dropdown.Item eventKey="Danger Block" onSelect={this.chooseTheme}>Danger Theme</Dropdown.Item>
+              <Dropdown.Item eventKey="Success Block" onSelect={this.chooseTheme}>Success Theme</Dropdown.Item>
+              <Dropdown.Item divider />
+              <Dropdown.Item eventKey="Reset Block" onSelect={this.chooseTheme}>Default Theme</Dropdown.Item>
+            </SplitButton>
           </div>
-
         </div>
-
       </div>
     );
-
   }
-
 }
-
 export default ThemeSwitcher;
