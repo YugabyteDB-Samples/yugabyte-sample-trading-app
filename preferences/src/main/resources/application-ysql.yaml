@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: 'jdbc:yugabytedb://localhost:5433/tradepref'
+    username: yugabyte
+    driver-class-name: com.yugabyte.Driver

@@ -1,5 +1,5 @@
 package com.yugabyte.samples.trading.preferences.model;
 
-public enum DeliveryMethod {
-  EDELIVERY, US_MAIL
+public enum DeliveryType {
+  EDELIVERY, US_POST
 }

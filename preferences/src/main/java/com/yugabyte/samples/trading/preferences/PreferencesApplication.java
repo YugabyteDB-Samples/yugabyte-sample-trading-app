@@ -1,5 +1,7 @@
 package com.yugabyte.samples.trading.preferences;
 
+import com.yugabyte.samples.trading.preferences.model.UserPreferences;
+import org.apache.catalina.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PreferencesApplication {
 
 	public static void main(String[] args) {
-		//Test Git
+
 		SpringApplication.run(PreferencesApplication.class, args);
 	}
 
