@@ -11,10 +11,12 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        format_sql: true
         connection:
           provider_disables_autocommit: true
         default_schema: public
     open-in-view: false
+
   datasource:
     hikari:
       minimum-idle: 5
@@ -42,3 +44,10 @@ management:
     web:
       exposure:
         include: "*"
+
+
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

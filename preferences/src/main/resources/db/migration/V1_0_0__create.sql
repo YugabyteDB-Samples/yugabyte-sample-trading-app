@@ -1,21 +1,17 @@
 
-CREATE TYPE delivery AS ENUM ('US_MAIL','EDELIVERY');
-
-CREATE TYPE region AS ENUM ('US', 'EU','AP','OTHER');
-
 CREATE SEQUENCE IF NOT EXISTS s_user_id;
 
 CREATE TABLE IF NOT EXISTS user_preferences
 (
   customer_id                integer     DEFAULT nextval('s_user_id'),
-  customer_name              varchar(50),
-  account_id                 varchar(50),
-  contact_email              varchar(50),
-  account_statement_delivery delivery DEFAULT ('US_MAIL'),
-  tax_forms_delivery         delivery DEFAULT ('EDELIVERY'),
-  trade_confirmation         delivery DEFAULT ('EDELIVERY'),
+  customer_name              varchar(50) NOT NULL,
+  account_id                 varchar(50) NOT NULL,
+  contact_email              varchar(50) ,
+  account_statement_delivery varchar(20) DEFAULT ('US_MAIL'),
+  tax_forms_delivery         varchar(20) DEFAULT ('EDELIVERY'),
+  trade_confirmation         varchar(20) DEFAULT ('EDELIVERY'),
   Trade_education_blog       bool DEFAULT FALSE,
-  preferred_region           region NULL NULL,
+  preferred_region           varchar(20) NOT NULL,
   created_date               TIMESTAMP   DEFAULT NOW(),
   updated_date               TIMESTAMP   DEFAULT NOW()
 ) PARTITION BY LIST (preferred_region);
