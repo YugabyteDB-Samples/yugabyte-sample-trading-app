@@ -65,3 +65,14 @@
 | http://localhost:8080/api-docs      | Open API v3.0 Spec ( JSON )                                                         |
 | http://localhost:8080/api-docs.yaml | Open API v3.0 Spec ( YAML )                                                         |
 | http://localhost:8080/api-docs.html | Open API / Swagger UI                                                               |
+
+
+## Screenshots
+
+1. Main UI (Desktop)
+
+    ![Main Desktop UI](docs/main-ui-desktop.png)
+
+2. Main UI (Mobile)
+
+    ![Main Mobile UI](docs/main-ui-mobile.png)
