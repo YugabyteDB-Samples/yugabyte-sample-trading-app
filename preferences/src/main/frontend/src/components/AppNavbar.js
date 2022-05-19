@@ -18,12 +18,12 @@ class AppNavbar extends Component {
   }
 
   render() {
-    return (<Navbar bg="dark" expand="lg">
+    return (<Navbar expand="lg">
           <Navbar.Brand href="/home">
             <img src={logo} height='30'
                  className="d-inline-block align-top"
                  alt="Trading Home Logo"/>
-            <span>TradeExpress</span>
+            <span>TradeX</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav">

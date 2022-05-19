@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <AppNavbar />
-        <div className='bg-light text-light pt-5' style={{height: '100vh'}}>
+        <div className='bg-light text-dark pt-5' style={{height: '100vh'}}>
           <div className='container'>
             <Routes>
               <Route path='/' exact={true} element={<Home/>}/>
