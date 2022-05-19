@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {Button, Stack} from "react-bootstrap";
+import {Button, Form, Stack} from "react-bootstrap";
 
 export default class ForgotPassword extends Component {
   render() {
     return (
-      <form>
+      <Form>
         <Stack gap={2} className="col-md-5 mx-auto">
         <h3>Forgot Password</h3>
           <label className="form-label">Email address</label>
@@ -17,7 +17,7 @@ export default class ForgotPassword extends Component {
             Request Password Reset
           </Button>
         </Stack>
-      </form>
+      </Form>
     )
   }
 }
