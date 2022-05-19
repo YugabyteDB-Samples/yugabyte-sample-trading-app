@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Home from './components/Home';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {HashRouter, Routes, Route} from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
@@ -10,11 +10,12 @@ import Preferences from "./components/Preferences";
 import AppNavbar from "./components/AppNavbar";
 import SignUp from "./components/SignUp";
 import ForgotPassword from "./components/ForgotPassword";
+import NotFound from "./components/NotFound";
 
 export default class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <AppNavbar/>
         <div className='bg-light text-dark pt-5' style={{height: '100vh'}}>
           <div className='container'>
@@ -29,10 +30,11 @@ export default class App extends Component {
               <Route path='/portfolio' exact={true} element={<Portfolio/>}/>
               <Route path='/market' exact={true} element={<MarketData/>}/>
               <Route path='/preferences' exact={true} element={<Preferences/>}/>
+              <Route path="/**" element={<NotFound />} />
             </Routes>
           </div>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 }

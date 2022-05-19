@@ -1,10 +1,8 @@
 import logo from '../logo192.png';
 
 import React, {Component} from 'react';
-import {
-  Container,
-  Nav, Navbar, NavDropdown
-} from 'react-bootstrap';
+import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import {NavLink} from "react-router-dom";
 
 export default class AppNavbar extends Component {
   constructor(props) {
@@ -23,7 +21,7 @@ export default class AppNavbar extends Component {
     return (
       <Container fluid={true}>
         <Navbar expand="lg">
-          <Navbar.Brand href="/home">
+          <Navbar.Brand href="#/home">
             <img src={logo} height='30'
                  className="d-inline-block align-top"
                  alt="Trading Home Logo"/>
@@ -32,11 +30,11 @@ export default class AppNavbar extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-              <Nav.Link href="/market">Market Data</Nav.Link>
-              <Nav.Link href="/preferences">Preferences</Nav.Link>
-              <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link href="/logout">Logout</Nav.Link>
+              <NavLink  className="nav-link" activeClassName="is-active" to="/dashboard">Dashboard</NavLink>
+              <NavLink  className="nav-link" activeClassName="is-active" to="/market">Market Data</NavLink>
+              <NavLink  className="nav-link" activeClassName="is-active" to="/preferences">Preferences</NavLink>
+              <NavLink  className="nav-link" activeClassName="is-active" to="/login">Login</NavLink>
+              <NavLink  className="nav-link" activeClassName="is-active" to="/logout">Logout</NavLink>
             </Nav>
             <Nav className="ms-auto">
               <NavDropdown title="About Yugabyte" id="basic-nav-dropdown">

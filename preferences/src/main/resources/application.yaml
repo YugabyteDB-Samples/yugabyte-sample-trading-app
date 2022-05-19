@@ -16,7 +16,6 @@ spring:
           provider_disables_autocommit: true
         default_schema: public
     open-in-view: false
-
   datasource:
     hikari:
       minimum-idle: 5
@@ -29,6 +28,9 @@ spring:
       base-path: /api
 #  jackson:
 #    property-naming-strategy: SNAKE_CASE
+  devtools:
+    livereload:
+      port: 35730
 
 springdoc:
   api-docs:

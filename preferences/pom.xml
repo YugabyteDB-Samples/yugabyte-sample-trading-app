@@ -106,7 +106,8 @@
       <groupId>com.yugabyte</groupId>
       <artifactId>testcontainers-yugabytedb</artifactId>
       <version>1.0.0-beta-4</version>
-      <scope>test</scope>
+      <scope>system</scope>
+      <systemPath>${basedir}/testcontainers-yugabytedb-1.0.0-beta-4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -137,26 +138,26 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/classes/static</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/frontend/build</directory>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/main/frontend/node_modules</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>src/main/frontend/node</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.github.eirslett</groupId>
@@ -208,8 +209,9 @@
           </execution>
         </executions>
         <configuration>
-          <workingDirectory>src/main/frontend</workingDirectory>
+          <workingDirectory>${project.basedir}/src/main/frontend</workingDirectory>
         </configuration>
+
       </plugin>
       <plugin>
         <groupId>org.flywaydb</groupId>

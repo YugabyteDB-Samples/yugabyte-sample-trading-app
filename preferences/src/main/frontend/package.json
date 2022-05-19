@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "BUILD_PATH=../../../target/classes/static react-scripts build --stats",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
