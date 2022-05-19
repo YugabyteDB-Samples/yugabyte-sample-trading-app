@@ -1,40 +1,36 @@
-// import './App.scss';
+import React, {Component} from 'react';
+import Home from './components/Home';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
+import Portfolio from "./components/Portfolio";
+import MarketData from "./components/MarketData";
+import Preferences from "./components/Preferences";
+import AppNavbar from "./components/AppNavbar";
 
-import React, { useState } from 'react';
-
-import Toast from 'react-bootstrap/Toast';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-
-
-const ExampleToast = ({ children }) => {
-  const [show, toggleShow] = useState(true);
-
-  return (
-    <>
-      {!show && <Button onClick={() => toggleShow(true)}>Show Toast</Button>}
-      <Toast show={show} onClose={() => toggleShow(false)}>
-        <Toast.Header>
-          <strong className="mr-auto">React-Bootstrap</strong>
-        </Toast.Header>
-        <Toast.Body>{children}</Toast.Body>
-      </Toast>
-    </>
-  );
-};
-
-const App = () => (
-  <Container className="p-3">
-    <Container className="p-5 mb-4 bg-light rounded-3">
-      <h1 className="header">Welcome To React-Bootstrap</h1>
-      <ExampleToast>
-        We now have Toasts
-        <span role="img" aria-label="tada">
-          🎉
-        </span>
-      </ExampleToast>
-    </Container>
-  </Container>
-);
+class App extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <AppNavbar />
+        <div className='bg-light text-light pt-5' style={{height: '100vh'}}>
+          <div className='container'>
+            <Routes>
+              <Route path='/' exact={true} element={<Home/>}/>
+              <Route path='/home' exact={true} element={<Home/>}/>
+              <Route path='/dashboard' exact={true} element={<Dashboard/>}/>
+              <Route path='/login' exact={true} element={<Login/>}/>
+              <Route path='/logout' exact={true} element={<Logout/>}/>
+              <Route path='/portfolio' exact={true} element={<Portfolio/>}/>
+              <Route path='/market' exact={true} element={<MarketData/>}/>
+              <Route path='/preferences' exact={true} element={<Preferences/>}/>
+            </Routes>
+          </div>
+        </div>
+      </BrowserRouter>
+    )
+  }
+}
 
 export default App;
