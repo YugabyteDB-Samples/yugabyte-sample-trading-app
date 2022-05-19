@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Container } from 'react-bootstrap';
+import React, {Component} from 'react';
+import {Container} from 'react-bootstrap';
 
-class Logout extends Component {
+export default class Logout extends Component {
   render() {
     return (<div>
       <Container>
@@ -11,5 +11,3 @@ class Logout extends Component {
   }
 
 }
-
-export default Logout;

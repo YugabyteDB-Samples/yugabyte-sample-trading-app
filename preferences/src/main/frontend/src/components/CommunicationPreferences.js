@@ -1,6 +1,6 @@
 import {Component} from "@types/react";
 
-class CommunicationPreferences extends Component {
+export default class CommunicationPreferences extends Component {
   state = {
     preferences: []
   };
@@ -32,4 +32,4 @@ class CommunicationPreferences extends Component {
     );
   }
 }
-export default CommunicationPreferences
+

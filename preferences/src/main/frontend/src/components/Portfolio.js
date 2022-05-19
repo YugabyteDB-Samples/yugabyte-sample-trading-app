@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
-class Portfolio extends Component {
+export default class Portfolio extends Component {
   render() {
     return (<div>
       <Container>
@@ -11,5 +11,3 @@ class Portfolio extends Component {
   }
 
 }
-
-export default Portfolio;

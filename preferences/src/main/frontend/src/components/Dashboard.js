@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
-class Dashboard extends Component {
+export default class Dashboard extends Component {
   render() {
     return ( <div>
       <Container>
@@ -11,4 +11,3 @@ class Dashboard extends Component {
   }
 
 }
-export default Dashboard;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
-class Preferences extends Component {
+export default class Preferences extends Component {
   render() {
     return (
       <div>
@@ -13,5 +13,3 @@ class Preferences extends Component {
   }
 
 }
-
-export default Preferences;

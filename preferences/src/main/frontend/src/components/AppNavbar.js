@@ -2,15 +2,17 @@ import logo from '../logo192.png';
 
 import React, {Component} from 'react';
 import {
+  Container,
   Nav, Navbar, NavDropdown
 } from 'react-bootstrap';
 
-class AppNavbar extends Component {
+export default class AppNavbar extends Component {
   constructor(props) {
     super(props);
     this.state = {isOpen: false};
     this.toggle = this.toggle.bind(this);
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -18,7 +20,9 @@ class AppNavbar extends Component {
   }
 
   render() {
-    return (<Navbar expand="lg">
+    return (
+      <Container fluid={true}>
+        <Navbar expand="lg">
           <Navbar.Brand href="/home">
             <img src={logo} height='30'
                  className="d-inline-block align-top"
@@ -45,8 +49,9 @@ class AppNavbar extends Component {
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
-      </Navbar>);
+        </Navbar>
+      </Container>
+    );
   }
 }
 
-export default AppNavbar;

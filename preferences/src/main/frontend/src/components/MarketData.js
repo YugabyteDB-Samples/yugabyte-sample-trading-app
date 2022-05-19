@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 
-class MarketData extends Component {
+export default class MarketData extends Component {
   render() {
     return (<div>
       <Container>
@@ -11,5 +11,3 @@ class MarketData extends Component {
   }
 
 }
-
-export default MarketData;

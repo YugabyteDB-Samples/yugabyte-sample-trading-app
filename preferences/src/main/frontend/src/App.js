@@ -8,12 +8,14 @@ import Portfolio from "./components/Portfolio";
 import MarketData from "./components/MarketData";
 import Preferences from "./components/Preferences";
 import AppNavbar from "./components/AppNavbar";
+import SignUp from "./components/SignUp";
+import ForgotPassword from "./components/ForgotPassword";
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <AppNavbar />
+        <AppNavbar/>
         <div className='bg-light text-dark pt-5' style={{height: '100vh'}}>
           <div className='container'>
             <Routes>
@@ -21,6 +23,8 @@ class App extends Component {
               <Route path='/home' exact={true} element={<Home/>}/>
               <Route path='/dashboard' exact={true} element={<Dashboard/>}/>
               <Route path='/login' exact={true} element={<Login/>}/>
+              <Route path='/forgot-password' exact={true} element={<ForgotPassword/>}/>
+              <Route path='/signup' exact={true} element={<SignUp/>}/>
               <Route path='/logout' exact={true} element={<Logout/>}/>
               <Route path='/portfolio' exact={true} element={<Portfolio/>}/>
               <Route path='/market' exact={true} element={<MarketData/>}/>
@@ -32,5 +36,3 @@ class App extends Component {
     )
   }
 }
-
-export default App;
