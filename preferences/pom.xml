@@ -107,7 +107,7 @@
       <artifactId>testcontainers-yugabytedb</artifactId>
       <version>1.0.0-beta-4</version>
       <scope>system</scope>
-      <systemPath>${basedir}/testcontainers-yugabytedb-1.0.0-beta-4.jar</systemPath>
+      <systemPath>${project.basedir}/lib/testcontainers-yugabytedb-1.0.0-beta-4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>

@@ -23,7 +23,7 @@
 3. **Temp** Install `testcontainer-yugabyte-1.0.0-beta-4.jar`
 
     ```bash
-    ./mvnw install:install-file -Dfile=testcontainers-yugabytedb-1.0.0-beta-4.jar -DgroupId=com.yugabyte -DartifactId=testcontainers-yugabytedb -Dversion=1.0.0-beta-4 -Dpackaging=jar
+    ./mvnw install:install-file -Dfile=./lib/testcontainers-yugabytedb-1.0.0-beta-4.jar -DgroupId=com.yugabyte -DartifactId=testcontainers-yugabytedb -Dversion=1.0.0-beta-4 -Dpackaging=jar
     ```
 
 4. Clean out any unwanted files
