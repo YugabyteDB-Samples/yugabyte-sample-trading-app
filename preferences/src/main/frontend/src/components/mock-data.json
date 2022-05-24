@@ -1,0 +1,19 @@
+{
+  "subscriptions": [
+    {
+      "id": "trade-blog",
+      "name": "Trade Blog",
+      "description": "Out trading tips blog "
+    },
+    {
+      "id": "webinar",
+      "name": "Webinar",
+      "description": "Our regular webinar"
+    },
+    {
+      "id": "newsletter",
+      "name": "Newsletter",
+      "description": "Monthly Newsletter"
+    }
+  ]
+}

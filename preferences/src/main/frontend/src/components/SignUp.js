@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useHref} from 'react-router-dom';
+import {InputLabel, Select} from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 
 
 export default function SignUp() {
@@ -73,6 +75,19 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <InputLabel id="pref_region_lbl">Preferred Region</InputLabel>
+                <Select fullWidth
+                  labelId="pref_region_lbl"
+                  id="demo-simple-select"
+                  label="Preferred Region"
+                >
+                  <MenuItem>Please Select</MenuItem>
+                  <MenuItem value='US'>Americas</MenuItem>
+                  <MenuItem value='EU'>Europe</MenuItem>
+                  <MenuItem value='AP'>Asia</MenuItem>
+                </Select>
               </Grid>
               <Grid item xs={12}>
                 <TextField
