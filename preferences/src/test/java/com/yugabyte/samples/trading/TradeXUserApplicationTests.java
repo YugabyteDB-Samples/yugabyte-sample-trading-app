@@ -1,13 +1,15 @@
-package com.yugabyte.samples.trading.preferences;
+package com.yugabyte.samples.trading;
 
-import static com.yugabyte.samples.trading.preferences.model.DeliveryType.EDELIVERY;
-import static com.yugabyte.samples.trading.preferences.model.RegionType.US;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
-import com.yugabyte.samples.trading.preferences.model.UserPreferences;
-import com.yugabyte.samples.trading.preferences.repository.UserPreferencesRepository;
-import java.time.Instant;
+import com.yugabyte.samples.trading.model.Customer;
+import com.yugabyte.samples.trading.model.DeliveryType;
+import com.yugabyte.samples.trading.model.RegionType;
+import com.yugabyte.samples.trading.model.SubscriptionStatus;
+import com.yugabyte.samples.trading.model.Preference;
+import com.yugabyte.samples.trading.repository.CustomerRepository;
+import com.yugabyte.samples.trading.repository.PreferenceRepository;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import org.flywaydb.test.annotation.FlywayTest;
@@ -17,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -34,7 +35,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-class PreferencesApplicationTests {
+class TradeXUserApplicationTests {
 
 
   @Autowired
@@ -47,7 +48,10 @@ class PreferencesApplicationTests {
   private EntityManager entityManager;
 
   @Autowired
-  UserPreferencesRepository userPreferencesRepository;
+  PreferenceRepository preferences;
+
+  @Autowired
+  CustomerRepository customers;
 
   @Container
   public static YugabyteYSQLContainer container = new YugabyteYSQLContainer(
@@ -83,18 +87,23 @@ class PreferencesApplicationTests {
   @Test
   @FlywayTest
   void shouldCreateOneRecord() {
-    var setup = UserPreferences.builder()
-      .accountStatementDelivery(EDELIVERY)
-      .contactEmail("test@yugabyte.com")
-      .createdDate(Instant.now())
-      .customerName("Demo Customer")
-      .taxFormsDelivery(EDELIVERY)
-      .tradeConfirmation(EDELIVERY)
-      .preferredRegion(US)
-      .updatedDate(Instant.now())
+    var customer = Customer.builder()
+      .customerName("Test Customer")
+      .preferred_region(RegionType.AP)
       .build();
-    var saved = userPreferencesRepository.save(setup);
-    var actualOptional =  userPreferencesRepository.findById(saved.getCustomerId());
+    var savedCustomer = customers.save(customer);
+
+    var setup = Preference.builder()
+      .customerId(savedCustomer.getCustomerId())
+      .accountStatementDelivery(DeliveryType.EDELIVERY)
+      .taxFormsDelivery(DeliveryType.EDELIVERY)
+      .tradeConfirmation(DeliveryType.EDELIVERY)
+      .subscribeWebinar(SubscriptionStatus.OPT_IN)
+      .subscribeBlog(SubscriptionStatus.OPT_IN)
+      .subscribeNewsletter(SubscriptionStatus.OPT_IN)
+      .build();
+    var saved = preferences.save(setup);
+    var actualOptional =  preferences.findById(saved.getCustomerId());
     assertThat(actualOptional).isNotNull().isPresent();
     var actual = actualOptional.get();
     assertThat(saved).isEqualTo(actual);
