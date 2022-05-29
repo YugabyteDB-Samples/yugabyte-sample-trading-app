@@ -1,4 +1,4 @@
-package com.yugabyte.samples.trading.preferences;
+package com.yugabyte.samples.trading;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
