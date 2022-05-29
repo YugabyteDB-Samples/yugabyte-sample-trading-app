@@ -1,4 +1,4 @@
-package com.yugabyte.samples.trading.preferences.model;
+package com.yugabyte.samples.trading.model;
 
 import static javax.persistence.EnumType.STRING;
 
