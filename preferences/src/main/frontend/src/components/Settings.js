@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import Container from "@mui/material/Container";
 import {Box, Stack, ToggleButtonGroup} from "@mui/material";
@@ -10,25 +10,22 @@ import EmailIcon from '@mui/icons-material/Email';
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import MuiToggleButton from "@mui/material/ToggleButton";
-import {styled} from "@mui/material/styles";
+import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import mockData from './mock-data.json';
-const ToggleButton = styled(MuiToggleButton)({
-  "&.Mui-selected, &.Mui-selected:hover": {
-    color: "green",
-    backgroundColor: '#00ff00'
-  }
-});
 
-export default function Settings() {
+
+export default function Settings(props) {
+  let [preference, setPreference] = useState(props.preference)
   let subscriptions = mockData.subscriptions;
 
   let subList = subscriptions.map((sub)=>
-      <Subscription label={sub.name}  description={sub.description} value="OptIn" />
+      <Subscription label={sub.name}  subscription_id={sub.id} description={sub.description} value={sub.default_option} />
     );
+  function onSave(){
+    console.log("save");
 
-
+  }
   return (
 
     <Box
@@ -52,7 +49,7 @@ export default function Settings() {
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ad aut culpa delectus doloribus eius est et excepturi exercitationem expedita facilis illo impedit inventore iure,
           maiores natus nemo neque nisi non odit officiis quam saepe sit tempore velit veritatis voluptate voluptatem. Doloribus ipsam laudantium, nihil nulla quia quibusdam tempora unde?
         </Typography>
-        <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
+        <Paper variant="outlined" sx={{p: {xs: 2, md: 3}}}>
           <Typography
             component="h6"
             variant="h4"
@@ -65,7 +62,7 @@ export default function Settings() {
           <hr/>
           <CommunicationPreference label="Statement (M/Q)" value="US_MAIL"/>
           <CommunicationPreference label="Trade confirmation and related prospectuses" value="US_MAIL"/>
-          <CommunicationPreference label="Tax forms and related disclosures" value="US_MAIL"/>
+          <CommunicationPreference label="Tax forms and related disclosures" value="EDELIVERY"/>
           <CommunicationPreference label="Prospectuses, shareholder reports, and other documents" value="US_MAIL"/>
           <Typography
             component="h6"
@@ -85,7 +82,7 @@ export default function Settings() {
           spacing={2}
           justifyContent="center"
         >
-          <Button variant="contained">Save</Button>
+          <Button variant="contained" onClick={onSave} >Save</Button>
           <Button variant="outlined">Cancel</Button>
         </Stack>
       </Container>
@@ -96,24 +93,24 @@ export default function Settings() {
 
 function CommunicationPreference(props) {
   let label = props.label;
-  let value = props.value;
+  const [value, setValue] = useState(props.value);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item md={8}>
+    <Grid container spacing={2} sx={{mt:1, mb:1}}>
+      <Grid item  xs={12} md={8}>
         <Typography variant="body1">{label}</Typography>
       </Grid>
-      <Grid item md={4}>
-        <ToggleButtonGroup value={value} exclusive>
-          <ToggleButton value="left" aria-label="left aligned">
-            <MarkunreadMailboxIcon/>
-            {' '}
-            <Typography variant="body2">US Mail</Typography>
-          </ToggleButton>
-          <ToggleButton value="center" aria-label="centered">
+      <Grid item xs={12} md={4}>
+        <ToggleButtonGroup value={value} exclusive fullWidth onChange={(e, v)=> setValue(v)}>
+          <ToggleButton value="EDELIVERY" color={'primary'}  selected={value === 'EDELIVERY'}>
             <EmailIcon/>
             {' '}
             <Typography variant="body2">eDelivery</Typography>
+          </ToggleButton>
+          <ToggleButton value="US_MAIL" color={'primary'} selected={value === 'US_MAIL'}>
+            <MarkunreadMailboxIcon/>
+            {' '}
+            <Typography variant="body2">US Mail</Typography>
           </ToggleButton>
         </ToggleButtonGroup>
       </Grid>
@@ -123,27 +120,28 @@ function CommunicationPreference(props) {
 
 function Subscription(props) {
   let label = props.label;
-  let value = props.value;
   let description = props.description;
+  let sub_id = props.sub_id;
+  const [value, setValue] = useState(props.value);
+
 
   return (
-    <Grid container>
+    <Grid container sx={{mt:1, mb:1}}>
       <Grid item xs={12} md={8}>
         <Typography variant="h6">{label}</Typography>
         <Typography variant="body1">{description}</Typography>
       </Grid>
       <Grid item xs={12} md={4}>
-        <ToggleButtonGroup value={value} exclusive>
-          <ToggleButton value="left" aria-label="left aligned" color="primary">
+        <ToggleButtonGroup value={value} exclusive fullWidth onChange={(e, v)=> setValue(v)}>
+          <ToggleButton value="OPT_IN" color={"primary"} selected={value === 'OPT_IN'}>
             <CheckCircleIcon/>
-
             {' '}
-            <Typography variant="body2" color="blue">Opt In</Typography>
+            <Typography variant="body2" >Opt In</Typography>
           </ToggleButton>
-          <ToggleButton value="center" aria-label="centered" color={'error'} >
+          <ToggleButton value="OPT_OUT" color={"error"} selected={value === 'OPT_OUT' }>
             <DoNotDisturbOnIcon />
             {' '}
-            <Typography variant="body2" color={'error'}>Opt Out</Typography>
+            <Typography variant="body2" >Opt Out</Typography>
           </ToggleButton>
         </ToggleButtonGroup>
       </Grid>

@@ -3,12 +3,14 @@
     {
       "id": "trade-blog",
       "name": "Trade Blog",
-      "description": "Out trading tips blog "
+      "description": "Out trading tips blog ",
+      "default_option": "OptOut"
     },
     {
       "id": "webinar",
       "name": "Webinar",
-      "description": "Our regular webinar"
+      "description": "Our regular webinar",
+      "default_option": "OptIn"
     },
     {
       "id": "newsletter",

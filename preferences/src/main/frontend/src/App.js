@@ -10,11 +10,28 @@ import "fontsource-roboto";
 import Home from "./components/Home";
 import SignIn from "./components/SignIn";
 import { Box, createTheme, CssBaseline } from "@mui/material";
-import { Container, ThemeProvider } from "@mui/system";
+import { ThemeProvider } from "@mui/system";
 import Settings from "./components/Settings";
 import SignOut from "./components/SignOut";
 
-const theme = createTheme();
+let theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0052cc',
+    },
+    secondary: {
+      main: '#edf2ff',
+    },
+  },
+});
+
+theme = createTheme(theme, {
+  palette: {
+    info: {
+      main: theme.palette.secondary.main,
+    },
+  },
+});
 
 export default class App extends Component {
   render() {
@@ -32,6 +49,7 @@ export default class App extends Component {
                 height: "100vh",
                 overflow: "auto",
                 mt: 8,
+                mb: 3,
               }}
             >
               <Routes>
