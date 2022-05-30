@@ -21,7 +21,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH=../../../target/classes/static react-scripts build",
+    "build": "npm run gen-to-src; npm run gen-to-target",
+    "gen-to-src": "BUILD_PATH=../../../src/main/resources/static react-scripts build",
+    "gen-to-target": "BUILD_PATH=../../../target/classes/static react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
