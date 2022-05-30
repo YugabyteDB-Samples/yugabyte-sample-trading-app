@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+import {useTheme} from '@mui/material/styles';
+import {Label, Line, LineChart, ResponsiveContainer, XAxis, YAxis} from 'recharts';
 import Title from './Title';
 
 // Generate Sales Data
 function createData(time, amount) {
-  return { time, amount };
+  return {time, amount};
 }
 
 const data = [
@@ -33,7 +33,7 @@ export default function Chart() {
             top: 16,
             right: 16,
             bottom: 0,
-            left: 24,            
+            left: 24,
           }}
         >
           <XAxis

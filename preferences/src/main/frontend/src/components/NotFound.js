@@ -1,24 +1,16 @@
 import React from 'react';
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
+import {Typography} from "@mui/material";
+import {Error} from "@mui/icons-material";
+import PageLayout from "./PageLayout";
 
-export default function Home() {
+export default function NotFound() {
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+    <PageLayout icon={<Error/>} title={"O-Oh!"} minHeight={"300"}>
 
-      
-      </Box>
-    </Container>
+      <Typography component="h5" variant="h5">
+        Looks like you are took a wrong turn!
+      </Typography>
+    </PageLayout>
   )
 };
 

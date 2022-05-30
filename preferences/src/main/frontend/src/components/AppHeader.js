@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,21 +11,21 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 const pages = [
-  { "label": 'Home', "route": "/home"},
-  { "label": 'Sign Up', "route": "/sign-up"},  
-  { "label": 'Sign In', "route": "/sign-in"},
-  
+  {"label": 'Home', "route": "/home"},
+  {"label": 'Sign Up', "route": "/sign-up"},
+  {"label": 'Sign In', "route": "/sign-in"},
+
 ];
 const settings = [
-  { "label" : "Account", "route": "/account"  },
-  { "label" : "Setting", "route": "/settings"  },
-  { "label" : "Sign Out", "route": "/sign-out"  }
+  {"label": "Account", "route": "/account"},
+  {"label": "Setting", "route": "/settings"},
+  {"label": "Sign Out", "route": "/sign-out"}
 ];
-const AppHeader = () => {
+export default function AppHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -48,10 +47,10 @@ const AppHeader = () => {
   return (
     <AppBar position="absolute">
       <Container maxWidth="xl">
-        <Toolbar disableGutters  sx={{
-              pr: '24px', // keep right padding when drawer closed
-            }}>
-          <CurrencyExchangeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+        <Toolbar disableGutters sx={{
+          pr: '24px', // keep right padding when drawer closed
+        }}>
+          <CurrencyExchangeIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
           <Typography
             variant="h6"
             noWrap
@@ -59,7 +58,7 @@ const AppHeader = () => {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: {xs: 'none', md: 'flex'},
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
@@ -69,7 +68,7 @@ const AppHeader = () => {
             TradeX
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -78,7 +77,7 @@ const AppHeader = () => {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <MenuIcon/>
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -95,7 +94,7 @@ const AppHeader = () => {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: {xs: 'block', md: 'none'},
               }}
             >
               {pages.map((page) => (
@@ -105,7 +104,7 @@ const AppHeader = () => {
               ))}
             </Menu>
           </Box>
-          <CurrencyExchangeIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <CurrencyExchangeIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
           <Typography
             variant="h5"
             noWrap
@@ -113,22 +112,22 @@ const AppHeader = () => {
             href=""
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,              
+              display: {xs: 'flex', md: 'none'},
+              flexGrow: 1,
               fontWeight: 700,
-              
+
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
             TradeX
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
             {pages.map((page) => (
               <Button
                 key={page.label}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{my: 2, color: 'white', display: 'block'}}
                 component={Link} to={page.route}
               >
                 {page.label}
@@ -136,14 +135,14 @@ const AppHeader = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{flexGrow: 0}}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.png" />
+              <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.png"/>
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{mt: '45px'}}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -159,7 +158,7 @@ const AppHeader = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.label} onClick={handleCloseUserMenu}  component={Link} to={setting.route}>
+                <MenuItem key={setting.label} onClick={handleCloseUserMenu} component={Link} to={setting.route}>
                   <Typography textAlign="center">{setting.label}</Typography>
                 </MenuItem>
               ))}
@@ -170,4 +169,3 @@ const AppHeader = () => {
     </AppBar>
   );
 };
-export default AppHeader;
