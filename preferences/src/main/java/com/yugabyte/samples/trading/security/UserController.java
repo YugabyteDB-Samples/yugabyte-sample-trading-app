@@ -1,11 +1,12 @@
 package com.yugabyte.samples.trading.security;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 import com.yugabyte.samples.trading.ApiError;
 import com.yugabyte.samples.trading.model.Customer;
 import com.yugabyte.samples.trading.model.RegionType;
 import com.yugabyte.samples.trading.repository.CustomerRepository;
-import java.security.Principal;
-import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -20,10 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +50,7 @@ public class UserController {
     this.jwtCodec = jwtCodec;
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/sign-up")
+  @RequestMapping(method = POST, value = "/sign-up")
   public SignupResponse signup(@Valid @RequestBody UserController.SignupRequest form) throws SignupException {
     Customer customer = createCustomer(form);
     return SignupResponse.builder()
@@ -60,14 +59,9 @@ public class UserController {
       .build();
   }
 
-  @RequestMapping(value = "/check-availability")
+  @RequestMapping(method = GET, value = "/check-availability")
   public Boolean checkAvailability(@RequestParam("login") String login) {
     return !users.userExists(login);
-  }
-
-  @RequestMapping(method = RequestMethod.GET, value = "/account-list")
-  public Optional<Customer> accountList(Principal principal) {
-    return customers.findByContactEmail(principal.getName());
   }
 
   @ExceptionHandler(SignupException.class)
@@ -78,12 +72,11 @@ public class UserController {
       .build();
   }
 
-  @PostMapping
-  @RequestMapping(value = "/sign-in")
+  @RequestMapping(method = POST, value = "/sign-in")
   public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequest request) {
     var userToken = new UsernamePasswordAuthenticationToken(request.getLogin(), request.getCredentials());
-    Authentication authentication =  authenticationManager.authenticate(userToken);
-    if(authentication.isAuthenticated()) {
+    Authentication authentication = authenticationManager.authenticate(userToken);
+    if (authentication.isAuthenticated()) {
       String jwt = jwtCodec.generateToken(authentication);
       return AuthenticationResponse.builder()
         .token(jwt)
@@ -93,28 +86,6 @@ public class UserController {
     }
     throw new RuntimeException("Invalid credentials");
   }
-
-
-  @Data
-  @Builder
-  public static class AuthenticationResponse {
-
-    private String token;
-    private String type = "Bearer";
-    private String status = "SUCCESS";
-    private String message;
-  }
-
-  @Data
-  @Builder
-  public static class AuthenticationRequest {
-
-    @NotBlank
-    private String login;
-    @NotBlank
-    private String credentials;
-  }
-
 
   private Customer createCustomer(SignupRequest form) throws SignupException {
     if (users.userExists(form.getEmail())) {
@@ -136,6 +107,26 @@ public class UserController {
     users.createUser(user);
     customer = customers.save(customer);
     return customer;
+  }
+
+  @Data
+  @Builder
+  public static class AuthenticationResponse {
+
+    private String token;
+    private String type;
+    private String status;
+    private String message;
+  }
+
+  @Data
+  @Builder
+  public static class AuthenticationRequest {
+
+    @NotBlank
+    private String login;
+    @NotBlank
+    private String credentials;
   }
 
   public static final class SignupException extends Exception {
