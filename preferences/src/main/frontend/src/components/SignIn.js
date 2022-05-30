@@ -12,20 +12,40 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useHref } from "react-router-dom";
+import {useState} from "react";
 
-export default function SignIn() {
+export default function SignIn(props, context) {
+  let [phase, setPhase] = useState("enter")
   const handleSubmit = (event) => {
     event.preventDefault();
+    setPhase("processing")
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const url = "/api/v1/users/sign-in";
+    const body = new URLSearchParams();
+    for (const pair of data) {
+      body.append(pair[0], pair[1]);
+    }
+
+    fetch(url, {
+      method: 'post',
+      body: body,
+    })
+    .then(()=>{
+      setPhase("enter");
+      context.history.push("user-home");
+    })
+    .catch(console.log);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+    // setTimeout(()=>{setPhase("enter")}, 2000);
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container  component="main" maxWidth="xs" >
       <CssBaseline />
+
       <Box
         sx={{
           marginTop: 8,
@@ -34,13 +54,22 @@ export default function SignIn() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1,color: 'primary' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h5" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box sx={{ mt: 1, display: phase === "processing" ? 'block': 'none' }} >
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography component="h6" variant="h6">
+                Processing...
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1,  display: phase === "enter" ? 'block': 'none' }} >
           <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
           <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
