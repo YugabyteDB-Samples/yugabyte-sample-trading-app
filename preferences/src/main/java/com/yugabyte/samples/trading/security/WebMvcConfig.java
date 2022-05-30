@@ -1,4 +1,4 @@
-package com.yugabyte.samples.trading;
+package com.yugabyte.samples.trading.security;
 
 
 import org.springframework.beans.factory.annotation.Value;
@@ -9,10 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-  @Value("${app.cors.maxAge}")
-  private final long maxAge = 3600;
-
-  @Value("${app.cors.allowedOrigins}")
+  @Value("${app.cors.max_age}")
+  private final Long maxAge = 3600L;
+  @Value("${app.cors.allowed_origins}")
   private String[] allowedOrigins;
 
   @Override
