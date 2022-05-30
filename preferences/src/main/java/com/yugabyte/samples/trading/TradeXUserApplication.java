@@ -1,8 +1,6 @@
 package com.yugabyte.samples.trading;
 
 import static java.lang.String.join;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.joining;
 
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
