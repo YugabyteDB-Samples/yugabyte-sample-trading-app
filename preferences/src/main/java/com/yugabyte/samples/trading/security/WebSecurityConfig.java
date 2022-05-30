@@ -50,7 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .csrf()
       .disable()
       .exceptionHandling()
-//      .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
       .and()
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -71,12 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       )
       .permitAll()
       // API Docs
-      .antMatchers(        "/api-docs",
-        "/api-docs.json",
-        "/api-docs.html",
-        "/api-docs.yaml",
-        "/api-docs.yml",
-        "/swagger-ui/**"
+      .antMatchers(
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/v3/api-docs.*"
       )
       .permitAll()
       // Registration and Authentication endpoints
@@ -89,17 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .permitAll()
       .anyRequest()
       .authenticated();
-//      .and()
-//      .formLogin()
-//      .loginProcessingUrl("/api/v1/users/sign-in")
-//      .failureForwardUrl("/#/sign-in?error=login-failed")
-//      .loginPage("/#/sign-in")
-//      .permitAll()
-//      .and()
-//      .logout()
-//      .logoutUrl("/api/v1/users/sign-out")
-//      .logoutSuccessUrl("/#/home")
-//      .permitAll();
+
 
     http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -145,7 +132,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .passwordEncoder(passwordEncoder());
 //      .usersByUsernameQuery("select username, password, enabled from users where username=?")
 //      .authoritiesByUsernameQuery("select username, role from users where username=?")
-    ;
 
   }
 
