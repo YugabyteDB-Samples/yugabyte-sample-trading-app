@@ -32,6 +32,16 @@ spring:
     livereload:
       port: 35730
 
+app:
+  security:
+    jwt:
+      secret: cccccclvkgnllrhrngucjbivrehvjcnkfvfihildhfcg
+      expiry: 86400
+  cors:
+    allowedOrigins:
+      - http://localhost:3000/
+    maxAge: 3600
+
 springdoc:
   api-docs:
     path: /api-docs
@@ -53,3 +63,6 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org:
+      springframework:
+        security: DEBUG

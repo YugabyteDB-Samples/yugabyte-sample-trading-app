@@ -11,10 +11,10 @@
   </parent>
 
   <groupId>com.yugabyte.samples.trading</groupId>
-  <artifactId>preferences</artifactId>
+  <artifactId>tradex</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>preferences</name>
-  <description>Yugabyte / Samples / Trading / Preferences</description>
+  <name>TradeX - Trading Made Easy</name>
+  <description>Yugabyte / Samples / TradeX</description>
   <properties>
     <java.version>17</java.version>
     <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
@@ -89,6 +89,29 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
       <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -220,4 +243,79 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>local-yb</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+              <executable>yb-ctl</executable>
+              <arguments>
+                <argument>destroy</argument>
+              </arguments>
+            </configuration>
+            <executions>
+              <execution>
+                <id>cluster-destroy</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>yb-ctl</executable>
+                  <arguments>
+                    <argument>destroy</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>cluster-create</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                <executable>yb-ctl</executable>
+                <arguments>
+                  <argument>create</argument>
+                  <argument>--rf=3</argument>
+                  <argument>--tserver_flags=cql_nodelist_refresh_interval_secs=2</argument>
+                  <argument>--master_flags="tserver_unresponsive_timeout_ms=2000"</argument>
+                </arguments>
+              </configuration>
+              </execution>
+              <execution>
+                <id>database-create</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>ysqlsh</executable>
+                  <arguments>
+                    <argument>-c</argument>
+                    <argument>create database tradepref</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>database-drop</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>ysqlsh</executable>
+                  <arguments>
+                    <argument>-c</argument>
+                    <argument>drop database tradepref</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
