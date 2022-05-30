@@ -27,12 +27,15 @@ public class JwtCodec {
   private String jwtSecret;
 
   @Value("${app.security.jwt.expiry}")
-  private int expirySeconds;
+  private Integer expirySeconds;
 
   public String generateToken(Authentication authentication) {
     Date now = from(now());
     Date expiryDate = from(now().plusSeconds(expirySeconds));
-    var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+    var authorities = authentication.getAuthorities()
+      .stream()
+      .map(GrantedAuthority::getAuthority)
+      .collect(Collectors.toSet());
     var subject = authentication.getName();
     Map<String, Object> claims = of("authorities", authorities);
     return Jwts.builder()
@@ -54,7 +57,9 @@ public class JwtCodec {
 
   public boolean validateToken(String authToken) {
     try {
-      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+      Jwts.parser()
+        .setSigningKey(jwtSecret)
+        .parseClaimsJws(authToken);
       return true;
     } catch (SignatureException ex) {
       log.error("Invalid JWT signature");
