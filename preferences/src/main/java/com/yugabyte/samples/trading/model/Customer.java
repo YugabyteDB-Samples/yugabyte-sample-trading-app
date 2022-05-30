@@ -43,7 +43,7 @@ public class Customer {
   @NonNull
   @Column(length = 20)
   @Enumerated(STRING)
-  private RegionType preferred_region;
+  private RegionType preferredRegion;
 
   @Column(insertable = false, updatable = false)
   private Instant createdDate;
