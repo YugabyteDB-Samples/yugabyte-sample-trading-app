@@ -13,6 +13,7 @@ import { Box, createTheme, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 import Settings from "./components/Settings";
 import SignOut from "./components/SignOut";
+import UserHome from "./components/UserHome";
 
 let theme = createTheme({
   palette: {
@@ -54,12 +55,13 @@ export default class App extends Component {
             >
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/sign-up" element={<SignUp />} />
-                <Route path="/sign-out" element={<SignOut />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="home" element={<Home />} />
+                <Route path="user-home" element={<UserHome />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="sign-in" element={<SignIn />} />
+                <Route path="sign-up" element={<SignUp />} />
+                <Route path="sign-out" element={<SignOut />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
                 <Route element={<NotFound />} />
               </Routes>
             </Box>
