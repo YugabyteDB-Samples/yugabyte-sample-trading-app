@@ -89,7 +89,7 @@ class TradeXUserApplicationTests {
   void shouldCreateOneRecord() {
     var customer = Customer.builder()
       .customerName("Test Customer")
-      .preferred_region(RegionType.AP)
+      .preferredRegion(RegionType.AP)
       .build();
     var savedCustomer = customers.save(customer);
 
