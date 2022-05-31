@@ -1,9 +1,2 @@
 .idea/
-/preferences/src/main/resources/static/static/
-/preferences/src/main/resources/static/asset-manifest.json
-/preferences/src/main/resources/static/favicon.ico
-/preferences/src/main/resources/static/index.html
-/preferences/src/main/resources/static/logo192.png
-/preferences/src/main/resources/static/logo512.png
-/preferences/src/main/resources/static/manifest.json
-/preferences/src/main/resources/static/robots.txt
+/secured-rest-api/
