@@ -16,8 +16,8 @@ import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 const pages = [
   {"label": 'Home', "route": "/home"},
-  {"label": 'Sign Up', "route": "/sign-up"},
-  {"label": 'Sign In', "route": "/sign-in"},
+  {"label": 'Sign Up', "route": "/sign-up", requiredLoginStatus: false},
+  {"label": 'Sign In', "route": "/sign-in", requiredLoginStatus: false},
 
 ];
 const settings = [
@@ -25,9 +25,15 @@ const settings = [
   {"label": "Setting", "route": "/settings"},
   {"label": "Sign Out", "route": "/sign-out"}
 ];
-export default function AppHeader() {
+export default function AppHeader(props) {
+  /**
+   * @type ApiClient
+   * */
+  const api = props.api;
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  let loggedIn = api.isLoggedIn();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -45,7 +51,7 @@ export default function AppHeader() {
   };
 
   return (
-    <AppBar position="absolute">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{
           pr: '24px', // keep right padding when drawer closed
@@ -68,7 +74,7 @@ export default function AppHeader() {
             TradeX
           </Typography>
 
-          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}} >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -98,9 +104,11 @@ export default function AppHeader() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.route}>
-                  <Typography textAlign="center">{page.label}</Typography>
-                </MenuItem>
+                page.hasOwnProperty("requiredLoginStatus") && page.requiredLoginStatus !== loggedIn ? null : (
+                    <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.route}>
+                      <Typography textAlign="center">{page.label}</Typography>
+                    </MenuItem>
+                )
               ))}
             </Menu>
           </Box>
@@ -124,46 +132,53 @@ export default function AppHeader() {
           </Typography>
           <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
             {pages.map((page) => (
-              <Button
-                key={page.label}
-                onClick={handleCloseNavMenu}
-                sx={{my: 2, color: 'white', display: 'block'}}
-                component={Link} to={page.route}
-              >
-                {page.label}
-              </Button>
+              page.hasOwnProperty("requiredLoginStatus") && page.requiredLoginStatus !== loggedIn ? null : (
+                <Button
+                  key={page.label}
+                  onClick={handleCloseNavMenu}
+                  sx={{my: 2, color: 'white', display: 'block'}}
+                  component={Link} to={page.route}
+                >
+                  {page.label}
+                </Button>
+              )
             ))}
           </Box>
-
-          <Box sx={{flexGrow: 0}}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.png"/>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{mt: '45px'}}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.label} onClick={handleCloseUserMenu} component={Link} to={setting.route}>
-                  <Typography textAlign="center">{setting.label}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {
+            loggedIn ?
+            (
+            <Box sx={{flexGrow: 0}} >
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.png"/>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{mt: '45px'}}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting.label} onClick={handleCloseUserMenu} component={Link} to={setting.route}>
+                    <Typography textAlign="center">{setting.label}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            )
+            :  null
+          }
         </Toolbar>
       </Container>
     </AppBar>

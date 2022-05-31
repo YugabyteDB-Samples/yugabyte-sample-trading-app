@@ -6,7 +6,6 @@ import Paper from "@mui/material/Paper";
 import {Money} from "@mui/icons-material";
 
 export default function PageLayout(props) {
-  console.log(props);
   return (
     <Container component="main" maxWidth={props.maxWidth}>
       <CssBaseline/>

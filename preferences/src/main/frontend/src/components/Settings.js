@@ -12,7 +12,12 @@ import mockData from './mock-data.json';
 import {DisplaySettings} from "@mui/icons-material";
 import PageLayout from "./PageLayout";
 
-export default function Settings() {
+export default function Settings(props) {
+  /**
+   * @type ApiClient
+   * */
+  const api = props.api;
+
   // let [preference, setPreference] = useState(props.preference)
   let subscriptions = mockData.subscriptions;
 

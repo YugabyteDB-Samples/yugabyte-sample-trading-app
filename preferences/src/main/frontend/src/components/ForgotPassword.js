@@ -8,7 +8,12 @@ import {useHref} from "react-router-dom";
 import React from "react";
 import PageLayout from "./PageLayout";
 
-export default function ForgotPassword() {
+export default function ForgotPassword(props) {
+  /**
+   * @type ApiClient
+   * */
+  const api = props.api;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
