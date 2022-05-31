@@ -11,21 +11,26 @@ import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtCodec jwtCodec;
-  private final UserDetailsManager users;
+  private final UserDetailsService users;
 
-  public JwtAuthenticationFilter(JwtCodec jwtCodec, UserDetailsManager users) {
+
+  public JwtAuthenticationFilter(JwtCodec jwtCodec, UserDetailsService users) {
     this.jwtCodec = jwtCodec;
     this.users = users;
   }
+
 
   @Override
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {

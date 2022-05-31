@@ -1,11 +1,9 @@
 package com.yugabyte.samples.trading.security;
 
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,8 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,16 +26,16 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-  private final DataSource dataSource;
-
+//  private UserDetailsService userDetailsService;
   private final JwtCodec jwtCodec;
 
-  @Autowired
-  public WebSecurityConfig(DataSource dataSource, JwtCodec jwtCodec) {
-    this.dataSource = dataSource;
-    this.jwtCodec = jwtCodec;
-  }
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+  @Autowired
+  public WebSecurityConfig(JwtCodec jwtCodec, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    this.jwtCodec = jwtCodec;
+    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -88,8 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .anyRequest()
       .authenticated();
 
-
-    http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
   }
 
@@ -108,33 +103,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return new CorsFilter(source);
   }
 
-
   @Bean
   @Override
   protected AuthenticationManager authenticationManager() throws Exception {
     return super.authenticationManager();
   }
 
-  @Bean
-  public JwtAuthenticationFilter jwtAuthenticationFilter() {
-    return new JwtAuthenticationFilter(jwtCodec, users());
-  }
+//  @Bean
+//  public UserDetailsManager users() {
+//    return new JdbcUserDetailsManager(dataSource);
+//  }
 
-  @Bean
-  public UserDetailsManager users() {
-    return new JdbcUserDetailsManager(dataSource);
-  }
-
-  @Override
-  public void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth
-      .jdbcAuthentication()
-      .dataSource(dataSource)
-      .passwordEncoder(passwordEncoder());
+//  @Override
+//  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//    auth
+//      .userDetailsService(userDetailsService())
+//      .jdbcAuthentication()
+//      .dataSource(dataSource)
+//      .passwordEncoder(passwordEncoder());
 //      .usersByUsernameQuery("select username, password, enabled from users where username=?")
 //      .authoritiesByUsernameQuery("select username, role from users where username=?")
-
-  }
+//
+//  }
 
 
   @Bean

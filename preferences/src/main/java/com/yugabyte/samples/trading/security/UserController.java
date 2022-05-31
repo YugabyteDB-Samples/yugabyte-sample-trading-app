@@ -1,27 +1,16 @@
 package com.yugabyte.samples.trading.security;
 
+import com.yugabyte.samples.trading.BadRequestException;
 import com.yugabyte.samples.trading.model.Customer;
 import com.yugabyte.samples.trading.model.RegionType;
 import com.yugabyte.samples.trading.repository.CustomerRepository;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,124 +20,50 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final CustomerRepository customers;
-  private final UserDetailsManager users;
-
-  private final PasswordEncoder passwordEncoder;
-
-  private final AuthenticationManager authenticationManager;
-
-
-  private final JwtCodec jwtCodec;
-
+  private final JwtAuthHelper authHelper;
   @Autowired
-  public UserController(CustomerRepository customers, UserDetailsManager users, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtCodec jwtCodec) {
+  public UserController(CustomerRepository customers, CustomerBasedUserDetailsService userDetailsService, JwtAuthHelper authHelper) {
     this.customers = customers;
-    this.users = users;
-    this.passwordEncoder = passwordEncoder;
-    this.authenticationManager = authenticationManager;
-    this.jwtCodec = jwtCodec;
+    this.authHelper = authHelper;
   }
 
   @PostMapping("/sign-up")
-  public SignupResponse signup(@Valid @RequestBody UserController.SignupRequest form) throws SignupException {
+  @ResponseStatus(HttpStatus.CREATED)
+  public SignupResponse signup(@Valid @RequestBody SignupRequest form)  {
     Customer customer = createCustomer(form);
     return SignupResponse.builder()
       .customerId(customer.getCustomerId())
-      .login(form.email)
+      .login(form.getEmail())
       .build();
-  }
-
-  @GetMapping("/check-availability")
-  public Boolean checkAvailability(@RequestParam("login") String login) {
-    return !users.userExists(login);
   }
 
   @PostMapping("/sign-in")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequest request) {
-    log.info("Received Login Request [{}]", request.getLogin());
-    var userToken = new UsernamePasswordAuthenticationToken(request.getLogin(), request.getCredentials());
-    log.info("Trying to auth [{}]", request.getLogin());
-    Authentication authentication = authenticationManager.authenticate(userToken);
-    log.info("Finished to auth [{}]", request.getLogin());
-    if (authentication.isAuthenticated()) {
-      log.info("Authenticated User [{}]", request.getLogin());
-      String jwt = jwtCodec.generateToken(authentication);
-      log.info("Created JWT Token [{}]", request.getLogin());
+
+      String jwt = authHelper.processLoginAndGenerateJwt(request.getLogin(), request.getCredentials());
       return AuthenticationResponse.builder()
         .token(jwt)
         .type("Bearer")
         .status("SUCCESS")
         .build();
-    }
-    throw new RuntimeException("Invalid credentials");
   }
 
-  private Customer createCustomer(SignupRequest form) throws SignupException {
-    if (users.userExists(form.getEmail())) {
-      throw new SignupException("Email already used");
+  private Customer createCustomer(SignupRequest form) {
+    if (customers.existsByEmail(form.getEmail())) {
+      throw new BadRequestException("Email already in use");
     }
 
     Customer customer = Customer.builder()
-      .customerName(String.format("%1$s $2%s", form.getFirstName(), form.getLastName()))
+      .fullName(form.getFullName())
       .preferredRegion(RegionType.valueOf(form.getPreferredRegion()))
-      .contactEmail(form.getEmail())
+      .email(form.getEmail())
+      .password(authHelper.encodePassword(form.getPassword()))
+      .phoneNumber(form.getPhoneNumber())
+      .enabled(true)
       .build();
 
-    UserDetails user = User.builder()
-      .username(form.getEmail())
-      .password(form.getPassword())
-      .passwordEncoder(passwordEncoder::encode)
-      .build();
-
-    users.createUser(user);
     customer = customers.save(customer);
     return customer;
-  }
-
-  @Data
-  @Builder
-  public static class AuthenticationResponse {
-
-    private String token;
-    private String type;
-    private String status;
-    private String message;
-  }
-
-  @Data
-  @Builder
-  public static class AuthenticationRequest {
-
-    @NotBlank
-    private String login;
-    @NotBlank
-    private String credentials;
-  }
-
-  public static final class SignupException extends Exception {
-
-    public SignupException(String message) {
-      super(message);
-    }
-  }
-
-  @Data
-  @Builder
-  public static final class SignupRequest {
-
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String preferredRegion;
-    private String password;
-  }
-
-  @Data
-  @Builder
-  public static final class SignupResponse {
-
-    private Integer customerId;
-    private String login;
   }
 }

@@ -14,16 +14,33 @@
     git clone https://github.com/yugabyte/yugabyte-sample-trading-app.git
     ```
 
-2. Change to `preferences` directory
+2. Create a multi region local cluster
+
+    a. Destroy cluster first (if required)
+
+    ```bash
+    yb-ctl destroy
+    ```
+
+    a. Destroy cluster first (if required)
+
+    ```bash
+    yb-ctl --rf 3 create \
+        --placement_info "aws.us-east-2.us-east-2c,aws.eu-central-1.eu-central-1c,aws.ap-southeast-1.ap-southeast-1c" \
+        --tserver_flags="cql_nodelist_refresh_interval_secs=2" \
+        --master_flags="tserver_unresponsive_timeout_ms=2000"
+    ```
+
+    a. Prepare the tablesapces using the sql script
+
+    ```bash
+    ysqlsh -f preferences/src/resource/db/prepare-ysql.sql
+    ```
+
+3. Change to `preferences` directory
 
     ```bash
     cd yugabyte-sample-trading-app/prefrences
-    ```
-
-3. **Temp** Install `testcontainer-yugabyte-1.0.0-beta-4.jar`
-
-    ```bash
-    ./mvnw install:install-file -Dfile=./lib/testcontainers-yugabytedb-1.0.0-beta-4.jar -DgroupId=com.yugabyte -DartifactId=testcontainers-yugabytedb -Dversion=1.0.0-beta-4 -Dpackaging=jar
     ```
 
 4. Clean out any unwanted files
@@ -57,14 +74,14 @@
 
 ## Links
 
-| Link                                | Description                                                                         |
-|-------------------------------------|-------------------------------------------------------------------------------------|
-| http://localhost:8080               | Bundled UI - Only updated on restarting Java App                                    |
-| http://localhost:3000               | Live Development UI - Make change in the JS file and you will see the changes here  |
-| http://localhost:8080/actuator      | Monitoring URL root                                                                 |
-| http://localhost:8080/api-docs      | Open API v3.0 Spec ( JSON )                                                         |
-| http://localhost:8080/api-docs.yaml | Open API v3.0 Spec ( YAML )                                                         |
-| http://localhost:8080/api-docs.html | Open API / Swagger UI                                                               |
+| Link                                        | Description                                                                        |
+|---------------------------------------------|------------------------------------------------------------------------------------|
+| http://localhost:8080                       | Bundled UI - Only updated on restarting Java App                                   |
+| http://localhost:3000                       | Live Development UI - Make change in the JS file and you will see the changes here |
+| http://localhost:8080/actuator              | Monitoring URL root                                                                |
+| http://localhost:8080/v3/api-docs           | Open API v3.0 Spec ( JSON )                                                        |
+| http://localhost:8080/v3/api-docs.yaml      | Open API v3.0 Spec ( YAML )                                                        |
+| http://localhost:8080/swagger-ui/index.html | Open API / Swagger UI                                                              |
 
 
 ## Screenshots

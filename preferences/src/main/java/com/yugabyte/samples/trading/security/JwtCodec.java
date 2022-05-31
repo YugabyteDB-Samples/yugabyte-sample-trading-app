@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,15 +30,10 @@ public class JwtCodec {
   @Value("${app.security.jwt.expiry}")
   private Integer expirySeconds;
 
-  public String generateToken(Authentication authentication) {
+  public String generateToken(UserDetails userDetails) {
     Date now = from(now());
     Date expiryDate = from(now().plusSeconds(expirySeconds));
-    var authorities = authentication.getAuthorities()
-      .stream()
-      .map(GrantedAuthority::getAuthority)
-      .collect(Collectors.toSet());
-    var subject = authentication.getName();
-    Map<String, Object> claims = of("authorities", authorities);
+    var subject = userDetails.getUsername();
     return Jwts.builder()
       .setIssuedAt(now)
       .setExpiration(expiryDate)

@@ -17,12 +17,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@Entity
-@Table(name = "customers")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@Entity
+@Table(name = "customers")
 public class Customer {
 
   @Id
@@ -32,18 +32,40 @@ public class Customer {
   @NonNull
   @NotNull
   @Column(length = 50)
-  private String customerName;
+  private String fullName;
 
   @Column(length = 50)
-  private String contactEmail;
+  private String email;
+
+  private String password;
+
+  private Boolean enabled;
 
   @Column(length = 20)
-  private String customerPhone;
+  private String phoneNumber;
 
   @NonNull
   @Column(length = 20)
   @Enumerated(STRING)
   private RegionType preferredRegion;
+
+  @Enumerated(STRING)
+  private DeliveryType accountStatementDelivery;
+
+  @Enumerated(STRING)
+  private DeliveryType taxFormsDelivery;
+
+  @Enumerated(STRING)
+  private DeliveryType tradeConfirmation;
+
+  @Enumerated(STRING)
+  private SubscriptionStatus subscribeBlog;
+
+  @Enumerated(STRING)
+  private SubscriptionStatus subscribeWebinar;
+
+  @Enumerated(STRING)
+  private SubscriptionStatus subscribeNewsletter;
 
   @Column(insertable = false, updatable = false)
   private Instant createdDate;

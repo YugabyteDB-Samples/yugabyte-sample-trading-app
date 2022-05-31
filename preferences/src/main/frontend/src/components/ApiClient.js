@@ -1,6 +1,9 @@
 export default class ApiClient {
   #token = '';
   #loggedIn = false;
+  #preferenceId = 0;
+  #customerId = 0;
+
 
   constructor(token) {
     this.#token = token
@@ -55,6 +58,9 @@ export default class ApiClient {
   signup(form){
     return this.post("/api/v1/users/sign-up", form);
   }
+  updatePreferences(preference){
+    return this.post("/api/v1/preferences/#{prefer", preference);
+  }
   checkLoginAvailability(login){
     return this.get("/api/v1/users/check-availability", {login: login});
   }
@@ -63,7 +69,7 @@ export default class ApiClient {
     return this.#loggedIn;
   }
   getPreferences(){
-    return this.po
+    // return this.po
   }
 
 }

@@ -1,5 +1,8 @@
 spring:
   datasource:
-    url: 'jdbc:yugabytedb://localhost:5433/tradepref'
+    url: 'jdbc:yugabytedb://localhost:5433/yugabyte?load-balance=true&topology-keys=aws.us-east-2.us-east-2c,aws.eu-central-1.eu-central-1c,aws.ap-southeast-1.ap-southeast-1c'
     username: yugabyte
     driver-class-name: com.yugabyte.Driver
+  flyway:
+    user: flyway
+
