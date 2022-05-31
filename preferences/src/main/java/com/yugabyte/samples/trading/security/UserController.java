@@ -1,9 +1,5 @@
 package com.yugabyte.samples.trading.security;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-import com.yugabyte.samples.trading.ApiError;
 import com.yugabyte.samples.trading.model.Customer;
 import com.yugabyte.samples.trading.model.RegionType;
 import com.yugabyte.samples.trading.repository.CustomerRepository;
@@ -11,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,13 +17,15 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -50,7 +49,7 @@ public class UserController {
     this.jwtCodec = jwtCodec;
   }
 
-  @RequestMapping(method = POST, value = "/sign-up")
+  @PostMapping("/sign-up")
   public SignupResponse signup(@Valid @RequestBody UserController.SignupRequest form) throws SignupException {
     Customer customer = createCustomer(form);
     return SignupResponse.builder()
@@ -59,25 +58,23 @@ public class UserController {
       .build();
   }
 
-  @RequestMapping(method = GET, value = "/check-availability")
+  @GetMapping("/check-availability")
   public Boolean checkAvailability(@RequestParam("login") String login) {
     return !users.userExists(login);
   }
 
-  @ExceptionHandler(SignupException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ApiError handleSingUpError(SignupException exception) {
-    return ApiError.builder()
-      .message(exception.getMessage())
-      .build();
-  }
-
-  @RequestMapping(method = POST, value = "/sign-in")
+  @PostMapping("/sign-in")
+  @ResponseStatus(HttpStatus.ACCEPTED)
   public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequest request) {
+    log.info("Received Login Request [{}]", request.getLogin());
     var userToken = new UsernamePasswordAuthenticationToken(request.getLogin(), request.getCredentials());
+    log.info("Trying to auth [{}]", request.getLogin());
     Authentication authentication = authenticationManager.authenticate(userToken);
+    log.info("Finished to auth [{}]", request.getLogin());
     if (authentication.isAuthenticated()) {
+      log.info("Authenticated User [{}]", request.getLogin());
       String jwt = jwtCodec.generateToken(authentication);
+      log.info("Created JWT Token [{}]", request.getLogin());
       return AuthenticationResponse.builder()
         .token(jwt)
         .type("Bearer")
