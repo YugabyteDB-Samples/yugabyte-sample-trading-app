@@ -81,7 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/api/v1/users/sign-up",
         "/api/v1/users/sign-in",
         "/api/v1/users/sign-out",
-        "/api/v1/users/check-availability"
+        "/api/v1/users/check-availability",
+        "/error"
       )
       .permitAll()
       .anyRequest()
