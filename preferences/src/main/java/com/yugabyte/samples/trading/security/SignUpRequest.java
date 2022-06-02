@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public final class SignupRequest {
+public final class SignUpRequest {
+
   private String fullName;
-  private String lastName;
   private String email;
   private String phoneNumber;
   private String preferredRegion;

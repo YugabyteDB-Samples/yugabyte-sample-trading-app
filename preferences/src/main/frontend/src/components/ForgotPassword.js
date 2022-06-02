@@ -7,19 +7,18 @@ import {useHref} from "react-router-dom";
 
 import React from "react";
 import PageLayout from "./PageLayout";
+import ApiClient from "./ApiClient";
 
-export default function ForgotPassword(props) {
-  /**
-   * @type ApiClient
-   * */
-  const api = props.api;
+export default function ForgotPassword() {
+  const api = new ApiClient();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-    });
+    api.passwordReset(data.get("email"))
+    .then((response) => {
+      alert(`New password: ${response.password}`);
+    })
   };
 
   return (
@@ -43,6 +42,5 @@ export default function ForgotPassword(props) {
         </Grid>
       </Grid>
     </PageLayout>
-  )
-    ;
+  );
 }

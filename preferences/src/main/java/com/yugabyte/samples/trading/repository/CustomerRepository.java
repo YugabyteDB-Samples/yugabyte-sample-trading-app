@@ -11,8 +11,12 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @OpenAPIDefinition()
 @SecurityRequirement(name = "auth-header-bearer")
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-  public Boolean existsByEmail(String email);
-  public Optional<Customer> getByEmail(String email);
-  public Boolean getCustomerByEmailAndPassword(String email, String encryptedPassword);
+
+  Boolean existsByEmail(String email);
+
+  Optional<Customer> getByEmail(String email);
+
+  Boolean getCustomerByEmailAndPassword(String email, String encryptedPassword);
+
 
 }

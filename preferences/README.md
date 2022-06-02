@@ -34,7 +34,7 @@
     a. Prepare the tablesapces using the sql script
 
     ```bash
-    ysqlsh -f preferences/src/resource/db/prepare-ysql.sql
+    ysqlsh -f src/resource/db/0-prepare-yugabytedb.sql
     ```
 
 3. Change to `preferences` directory

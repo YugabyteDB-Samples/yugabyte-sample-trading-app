@@ -26,14 +26,13 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-//  private UserDetailsService userDetailsService;
-  private final JwtCodec jwtCodec;
+  //  private UserDetailsService userDetailsService;
+
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
   @Autowired
-  public WebSecurityConfig(JwtCodec jwtCodec, JwtAuthenticationFilter jwtAuthenticationFilter) {
-    this.jwtCodec = jwtCodec;
+  public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }
 
@@ -78,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/api/v1/users/sign-in",
         "/api/v1/users/sign-out",
         "/api/v1/users/check-availability",
+        "/api/v1/users/password-reset",
         "/error"
       )
       .permitAll()
@@ -108,24 +108,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected AuthenticationManager authenticationManager() throws Exception {
     return super.authenticationManager();
   }
-
-//  @Bean
-//  public UserDetailsManager users() {
-//    return new JdbcUserDetailsManager(dataSource);
-//  }
-
-//  @Override
-//  public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//    auth
-//      .userDetailsService(userDetailsService())
-//      .jdbcAuthentication()
-//      .dataSource(dataSource)
-//      .passwordEncoder(passwordEncoder());
-//      .usersByUsernameQuery("select username, password, enabled from users where username=?")
-//      .authoritiesByUsernameQuery("select username, role from users where username=?")
-//
-//  }
-
 
   @Bean
   public PasswordEncoder passwordEncoder() {

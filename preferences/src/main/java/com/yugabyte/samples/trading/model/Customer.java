@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import net.minidev.json.annotate.JsonIgnore;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +38,7 @@ public class Customer {
   @Column(length = 50)
   private String email;
 
+  @JsonIgnore
   private String password;
 
   private Boolean enabled;

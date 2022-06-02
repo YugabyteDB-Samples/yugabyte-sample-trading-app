@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,27 +14,24 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from 'react-router-dom';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import {useAuth} from "./AuthProvider";
 
 const pages = [
   {"label": 'Home', "route": "/home"},
-  {"label": 'Sign Up', "route": "/sign-up", requiredLoginStatus: false},
-  {"label": 'Sign In', "route": "/sign-in", requiredLoginStatus: false},
+  {"label": 'Sign Up', "route": "/sign-up", requiredSignInStatus: false},
+  {"label": 'Sign In', "route": "/sign-in", requiredSignInStatus: false},
 
 ];
 const settings = [
-  {"label": "Account", "route": "/account"},
+  {"label": "Account", "route": "/user-home"},
   {"label": "Setting", "route": "/settings"},
   {"label": "Sign Out", "route": "/sign-out"}
 ];
-export default function AppHeader(props) {
-  /**
-   * @type ApiClient
-   * */
-  const api = props.api;
-
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  let loggedIn = api.isLoggedIn();
+export default function AppHeader() {
+  let {authData} = useAuth();
+  const [signedIn] = useState(authData != null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -74,7 +72,7 @@ export default function AppHeader(props) {
             TradeX
           </Typography>
 
-          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}} >
+          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -104,10 +102,10 @@ export default function AppHeader(props) {
               }}
             >
               {pages.map((page) => (
-                page.hasOwnProperty("requiredLoginStatus") && page.requiredLoginStatus !== loggedIn ? null : (
-                    <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.route}>
-                      <Typography textAlign="center">{page.label}</Typography>
-                    </MenuItem>
+                page.hasOwnProperty("requiredSignInStatus") && page.requiredSignInStatus !== signedIn ? null : (
+                  <MenuItem key={page.label} onClick={handleCloseNavMenu} component={Link} to={page.route}>
+                    <Typography textAlign="center">{page.label}</Typography>
+                  </MenuItem>
                 )
               ))}
             </Menu>
@@ -132,7 +130,7 @@ export default function AppHeader(props) {
           </Typography>
           <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
             {pages.map((page) => (
-              page.hasOwnProperty("requiredLoginStatus") && page.requiredLoginStatus !== loggedIn ? null : (
+              page.hasOwnProperty("requiredSignInStatus") && page.requiredSignInStatus !== signedIn ? null : (
                 <Button
                   key={page.label}
                   onClick={handleCloseNavMenu}
@@ -145,39 +143,39 @@ export default function AppHeader(props) {
             ))}
           </Box>
           {
-            loggedIn ?
-            (
-            <Box sx={{flexGrow: 0}} >
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.png"/>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{mt: '45px'}}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting.label} onClick={handleCloseUserMenu} component={Link} to={setting.route}>
-                    <Typography textAlign="center">{setting.label}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            )
-            :  null
+            signedIn ?
+              (
+                <Box sx={{flexGrow: 0}}>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.png"/>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{mt: '45px'}}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {settings.map((setting) => (
+                      <MenuItem key={setting.label} onClick={handleCloseUserMenu} component={Link} to={setting.route}>
+                        <Typography textAlign="center">{setting.label}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+              )
+              : null
           }
         </Toolbar>
       </Container>

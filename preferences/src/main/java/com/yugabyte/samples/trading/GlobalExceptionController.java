@@ -1,30 +1,32 @@
 package com.yugabyte.samples.trading;
 
-import org.springframework.core.convert.ConversionFailedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@ControllerAdvice
+@Slf4j
 public class GlobalExceptionController {
 
-  @ExceptionHandler({ConversionFailedException.class, BadRequestException.class})
+  @ExceptionHandler({RuntimeException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ResponseEntity<ApiError> handleBadRequest(RuntimeException exception) {
-    var apiError = ApiError.builder()
-      .message(exception.getMessage())
-      .build();
-    return ResponseEntity.badRequest()
-      .body(apiError);
+  @ResponseBody
+  public ApiError handleBadRequest(RuntimeException exception) {
+    ApiError error = new ApiError(exception);
+    log.error("Other Error: {}", error);
+    return error;
   }
 
 
-  @ExceptionHandler(ResourceNotFoundException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  public ResponseEntity<String> handleNotFound(RuntimeException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  @ExceptionHandler({ApiException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ApiError handleApiException(ApiException exception) {
+    ApiError error = exception.getError();
+    log.error("API Error: {}", error);
+    return error;
   }
-
 }

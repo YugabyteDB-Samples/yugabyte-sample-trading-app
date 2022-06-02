@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class JwtAuthHelper {
+
   private final JwtCodec jwtCodec;
   private final PasswordEncoder passwordEncoder;
 

@@ -7,7 +7,8 @@ import {Money} from "@mui/icons-material";
 
 export default function PageLayout(props) {
   return (
-    <Container component="main" maxWidth={props.maxWidth}>
+
+    <Container component="main" maxWidth={props.maxWidth} sx={{mt: 4, mb: 4}}>
       <CssBaseline/>
       <Paper sx={{m: 2, mt: 8, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: props.minHeight}}>
         <Avatar sx={{m: 1, bgcolor: props.iconColor}}>
