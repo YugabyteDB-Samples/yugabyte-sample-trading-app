@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: 'jdbc:yugabytedb://localhost:5433/yugabyte?load-balance=true&topology-keys=${app.topology-keys}'
+    url: 'jdbc:yugabytedb://${app.initial-ysql-host}:5433/yugabyte?load-balance=true&topology-keys=${app.topology-keys}'
     username: yugabyte
     driver-class-name: com.yugabyte.Driver
   flyway:

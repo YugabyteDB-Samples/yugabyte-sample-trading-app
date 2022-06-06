@@ -17,16 +17,24 @@ export default function Settings() {
   const api = new ApiClient();
 
   let [profile, setProfile] = useState(null);
+  let [status, setStatus] = useState({status: "init", message: ""});
+
   let navigate = useNavigate();
+  if (profile == null) {
+    api.getProfile()
+      .then((data) => {
+        let {accountStatementDelivery, taxFormsDelivery, tradeConfirmation, subscribeBlog, subscribeWebinar, subscribeNewsletter} = data;
+        var profile = {
+          accountStatementDelivery, taxFormsDelivery, tradeConfirmation, subscribeBlog, subscribeWebinar, subscribeNewsletter
+        };
 
-  api.getProfile()
-  .then((profile) => {
-    setProfile(profile);
-  });
+        setProfile(profile);
+      });
+  }
 
-  function updateProfile(key, event) {
+  function updateProfile(key, value) {
     let update = {};
-    update[key] = event.target.value;
+    update[key] = value;
     let newProfile = {
       ...profile, ...update
     };
@@ -34,8 +42,12 @@ export default function Settings() {
   }
 
   function onSave() {
-    console.log("save");
-    navigate(-1);
+    api.updateProfile(profile).then((e) => {
+      setStatus({status: "success", message: "Update successful"});
+    })
+      .catch((e) => {
+        setStatus({status: "error", message: e.message});
+      });
   }
 
   function onCancel() {
@@ -44,14 +56,23 @@ export default function Settings() {
 
   return (
 
-    <PageLayout icon={<DisplaySettings/>} title={"Forgot Password"} maxWidth="lg" minHeight={"300"}>
+    <PageLayout icon={<DisplaySettings/>} title={"User Settings"} maxWidth="lg" minHeight={"300"}>
+      {status.message && <Grid item xs={12} md={8}>
+        <Typography variant="body1" className={status.status}>{status.messsage}</Typography>
+      </Grid>}
       <Divider>
         <Chip label="Communication Preferences"/>
       </Divider>
       {!!profile && <>
-        <CommunicationPreference label="Statement (M/Q)" value={profile.accountStatementDelivery} onChange={e => updateProfile('accountStatementDelivery', e)}/>
-        <CommunicationPreference label="Trade confirmation and related prospectuses" value={profile.tradeConfirmation} onChange={e => updateProfile('tradeConfirmation', e)}/>
-        <CommunicationPreference label="Tax forms and related disclosures" value={profile.taxFormDelivery} onChange={e => updateProfile('taxFormDelivery', e)}/>
+        <CommunicationPreference label="Statement (M/Q)" value={profile.accountStatementDelivery} onChange={(event, value) => {
+          updateProfile('accountStatementDelivery', value)
+        }}/>
+        <CommunicationPreference label="Trade confirmation and related prospectuses" value={profile.tradeConfirmation} onChange={(event, value) => {
+          updateProfile('tradeConfirmation', value)
+        }}/>
+        <CommunicationPreference label="Tax forms and related disclosures" value={profile.taxFormsDelivery} onChange={(event, value) => {
+          updateProfile('taxFormsDelivery', value)
+        }}/>
         <Divider>
           <Chip label="Subscriptions"/>
         </Divider>
@@ -72,8 +93,7 @@ export default function Settings() {
           <Button variant="contained" onClick={onSave}>Save</Button>
           <Button variant="outlined" onClick={onCancel}>Cancel</Button>
         </Stack>
-      </>
-      }
+      </>}
     </PageLayout>);
 };
 

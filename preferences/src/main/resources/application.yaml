@@ -3,7 +3,15 @@ application:
   version: 1.0
 
 app:
-  topology-keys: aws.us-east-2.us-east-2c,aws.eu-central-1.eu-central-1c,aws.ap-southeast-1.ap-southeast-1c
+# For US
+#  topology-keys: aws.us-east-2.us-east-2c
+#  initial-ysql-host: 127.0.0.1
+# For EU
+#  topology-keys: aws.eu-central-1.eu-central-1c
+#  initial-ysql-host: 127.0.0.2
+# For AP
+  topology-keys: aws.ap-southeast-1.ap-southeast-1c
+  initial-ysql-host: 127.0.0.3
   security:
     jwt:
       secret: cccccclvkgnllrhrngucjbivrehvjcnkfvfihildhfcg
@@ -49,6 +57,9 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
 
 
 
@@ -59,5 +70,5 @@ logging:
     org:
       springframework:
         security: DEBUG
-    web: debug
+    web: trace
     sql: debug

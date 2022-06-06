@@ -61,7 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/logo192.png",
         "/logo512.png",
         "/manifest.json",
-        "/robots.txt"
+        "/robots.txt",
+        "/actuator/**"
       )
       .permitAll()
       // API Docs

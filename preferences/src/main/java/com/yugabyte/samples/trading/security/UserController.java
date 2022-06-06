@@ -58,14 +58,14 @@ public class UserController {
   public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequest request) {
 
     String jwt = authHelper.processLoginAndGenerateJwt(request.getLogin(), request.getCredentials());
-    int customerId = customers.getByEmail(request.getLogin())
+    var customerId = customers.getByEmail(request.getLogin())
       .orElseThrow()
       .getCustomerId();
     return AuthenticationResponse.builder()
       .token(jwt)
       .type("Bearer")
       .status("SUCCESS")
-      .cutomerId(customerId)
+      .customerId(customerId)
       .build();
   }
 
@@ -92,7 +92,7 @@ public class UserController {
 
     Customer customer = Customer.builder()
       .fullName(form.getFullName())
-      .preferredRegion(RegionType.valueOf(form.getPreferredRegion()))
+      .preferredRegion( RegionType.valueOf(form.getPreferredRegion()))
       .email(form.getEmail())
       .password(authHelper.encodePassword(form.getPassword()))
       .phoneNumber(form.getPhoneNumber())

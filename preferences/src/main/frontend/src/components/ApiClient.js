@@ -25,7 +25,7 @@ const ApiClient = function () {
         ...headers
       }
     };
-    if (method !== "get" && body !== undefined && body !== null) {
+    if (method !== "GET" && body !== undefined && body !== null) {
       options.body = JSON.stringify(body);
     }
 
@@ -44,7 +44,7 @@ const ApiClient = function () {
   }
 
   function _post(url, data, headers) {
-    return _request("post", url, data, headers);
+    return _request("POST", url, data, headers);
   }
 
   function _get(url, data, headers) {
@@ -54,7 +54,7 @@ const ApiClient = function () {
     if (qStr === "?") {
       getUrl = url
     }
-    return _request("get", getUrl, headers);
+    return _request("GET", getUrl, headers);
   }
 
   // function _delete(url, data, headers) {
@@ -66,7 +66,7 @@ const ApiClient = function () {
   // }
 
   function _patch(url, data, headers) {
-    return _request("patch", url, data, headers);
+    return _request("PATCH", url, data, headers);
   }
 
   /**
