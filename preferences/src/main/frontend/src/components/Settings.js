@@ -60,7 +60,7 @@ export default function Settings() {
 
     <PageLayout icon={<DisplaySettings/>} title={"User Settings"} maxWidth="lg" minHeight={"300"}>
       {
-        status.message != "" &&
+        status.message !== "" &&
         <Grid item xs={12} md={8}>
         <Typography variant="body1" sx={{m: 5, bgcolor: status.status + ".main"}}> Status: {status.message}</Typography>
       </Grid>

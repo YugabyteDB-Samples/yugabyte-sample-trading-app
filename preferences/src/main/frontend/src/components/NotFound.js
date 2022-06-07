@@ -3,12 +3,7 @@ import {Typography} from "@mui/material";
 import {Error} from "@mui/icons-material";
 import PageLayout from "./PageLayout";
 
-export default function NotFound(props) {
-  /**
-   * @type ApiClient
-   * */
-  const api = props.api;
-
+export default function NotFound() {
   return (
     <PageLayout icon={<Error/>} title={"O-Oh!"} minHeight={"300"}>
 
