@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit5.FlywayTestExtension;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-@Ignore
+@Disabled
 class TradeXUserApplicationTests {
 
 
