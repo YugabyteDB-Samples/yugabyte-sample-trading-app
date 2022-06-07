@@ -1,7 +1,14 @@
-name: Java CI
+name: Preferences App CI
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'preferences/**'
 
+defaults:
+  run:
+    shell: bash
+    working-directory: preferences
 jobs:
   build:
     runs-on: ubuntu-latest
