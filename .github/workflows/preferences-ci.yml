@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'preferences/**'
+      - '.github/workflows/preferences-ci.yml'
   workflow_dispatch:
 
 
