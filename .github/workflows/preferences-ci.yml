@@ -29,8 +29,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy artifacts
-        run: mkdir staging && cp target/*.jar staging
+        run: mkdir -p preferences/target/staging && cp preferences/target/*.jar preferences/target/staging
       - uses: actions/upload-artifact@v3
         with:
           name: Package
-          path: staging
+          path: preferences/target/staging

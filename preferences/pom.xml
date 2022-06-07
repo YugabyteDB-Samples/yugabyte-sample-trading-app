@@ -234,6 +234,12 @@
         <artifactId>flyway-maven-plugin</artifactId>
         <version>8.0.5</version>
       </plugin>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>4.9.10</version>
+
+      </plugin>
     </plugins>
   </build>
   <profiles>
