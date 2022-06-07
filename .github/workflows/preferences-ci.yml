@@ -46,11 +46,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: upload linux artifact
         uses: actions/upload-release-asset@v1
-
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/tradex-0.0.1-SNAPSHOT.jar
+          asset_path: ./preferences/target/tradex-0.0.1-SNAPSHOT.jar
           asset_name: tradex-0.0.1-SNAPSHOT.jar
           asset_content_type: application/gzip
