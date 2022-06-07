@@ -25,14 +25,12 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
-        run: ./mvnw --batch-mode --update-snapshots package
+        run: ./mvnw --batch-mode --update-snapshots package verify deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy artifacts
         run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@v3
         with:
           name: Package
           path: staging
-      - name: Publish package
-        run: ./mvnw --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
