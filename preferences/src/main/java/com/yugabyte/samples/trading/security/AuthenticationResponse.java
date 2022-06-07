@@ -1,5 +1,6 @@
 package com.yugabyte.samples.trading.security;
 
+import com.yugabyte.samples.trading.model.RegionType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import lombok.Data;
 public class AuthenticationResponse {
 
   private String token;
-  private Integer customerId;
+  private String customerId;
   private String type;
   private String status;
   private String message;

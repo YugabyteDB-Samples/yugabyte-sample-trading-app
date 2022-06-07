@@ -2,13 +2,16 @@ package com.yugabyte.samples.trading.model;
 
 import static javax.persistence.EnumType.STRING;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Instant;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +19,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import net.minidev.json.annotate.JsonIgnore;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,9 +28,9 @@ import net.minidev.json.annotate.JsonIgnore;
 @Table(name = "customers")
 public class Customer {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer customerId;
+
+  @EmbeddedId
+  private CustomerPK id;
 
   @NonNull
   @NotNull
@@ -38,18 +40,13 @@ public class Customer {
   @Column(length = 50)
   private String email;
 
-  @JsonIgnore
+  @JsonIgnore()
   private String password;
 
   private Boolean enabled;
 
   @Column(length = 20)
   private String phoneNumber;
-
-  @NonNull
-  @Column(length = 20)
-  @Enumerated(STRING)
-  private RegionType preferredRegion;
 
   @Enumerated(STRING)
   private DeliveryType accountStatementDelivery;

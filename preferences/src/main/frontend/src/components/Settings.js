@@ -24,7 +24,7 @@ export default function Settings() {
     api.getProfile()
       .then((data) => {
         let {accountStatementDelivery, taxFormsDelivery, tradeConfirmation, subscribeBlog, subscribeWebinar, subscribeNewsletter} = data;
-        var profile = {
+        let profile = {
           accountStatementDelivery, taxFormsDelivery, tradeConfirmation, subscribeBlog, subscribeWebinar, subscribeNewsletter
         };
 
@@ -42,6 +42,8 @@ export default function Settings() {
   }
 
   function onSave() {
+    setStatus({status: "processing", message: "Processing"});
+
     api.updateProfile(profile).then((e) => {
       setStatus({status: "success", message: "Update successful"});
     })
@@ -57,13 +59,16 @@ export default function Settings() {
   return (
 
     <PageLayout icon={<DisplaySettings/>} title={"User Settings"} maxWidth="lg" minHeight={"300"}>
-      {status.message && <Grid item xs={12} md={8}>
-        <Typography variant="body1" className={status.status}>{status.messsage}</Typography>
-      </Grid>}
+      {
+        status.message != "" &&
+        <Grid item xs={12} md={8}>
+        <Typography variant="body1" sx={{m: 5, bgcolor: status.status + ".main"}}> Status: {status.message}</Typography>
+      </Grid>
+      }
+      {!!profile && <>
       <Divider>
         <Chip label="Communication Preferences"/>
       </Divider>
-      {!!profile && <>
         <CommunicationPreference label="Statement (M/Q)" value={profile.accountStatementDelivery} onChange={(event, value) => {
           updateProfile('accountStatementDelivery', value)
         }}/>
@@ -79,15 +84,15 @@ export default function Settings() {
         <Subscription label="Trading Blog"
                       description="Subscribe to our Trading blog for latest news, insights and tips"
                       value={profile.subscribeBlog}
-                      onChange={e => updateProfile('subscribeBlog', e)}/>
+                      onChange={(e,v) => updateProfile('subscribeBlog', v)}/>
         <Subscription label="Trading Newsletter"
                       description="Our weekly Newsletter covering trends and weekly roundup"
                       value={profile.subscribeNewsletter}
-                      onChange={e => updateProfile('subscribeNewsletter', e)}/>
+                      onChange={(e,v) => updateProfile('subscribeNewsletter', v)}/>
         <Subscription label="Webinar"
                       description="Opt to hear from us about our regular webinars and events"
                       value={profile.subscribeWebinar}
-                      onChange={e => updateProfile('subscribeWebinar', e)}/>
+                      onChange={(e,v) => updateProfile('subscribeWebinar', v)}/>
 
         <Stack sx={{pt: 4}} direction="row" spacing={2} justifyContent="center">
           <Button variant="contained" onClick={onSave}>Save</Button>

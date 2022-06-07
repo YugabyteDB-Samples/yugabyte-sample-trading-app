@@ -2,7 +2,7 @@ package com.yugabyte.samples.trading.security;
 
 import com.yugabyte.samples.trading.ApiException;
 import com.yugabyte.samples.trading.model.Customer;
-import com.yugabyte.samples.trading.model.RegionType;
+import com.yugabyte.samples.trading.model.CustomerPK;
 import com.yugabyte.samples.trading.repository.CustomerRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
@@ -36,7 +36,10 @@ public class UserController {
   public SignUpResponse signup(@Valid @RequestBody SignUpRequest form) {
     Customer customer = createCustomer(form);
     return SignUpResponse.builder()
-      .customerId(customer.getCustomerId())
+      .accountNumber(customer.getId()
+        .getAccountNumber())
+      .region(customer.getId()
+        .getRegion())
       .login(form.getEmail())
       .build();
   }
@@ -60,12 +63,12 @@ public class UserController {
     String jwt = authHelper.processLoginAndGenerateJwt(request.getLogin(), request.getCredentials());
     var customerId = customers.getByEmail(request.getLogin())
       .orElseThrow()
-      .getCustomerId();
+      .getId();
     return AuthenticationResponse.builder()
       .token(jwt)
       .type("Bearer")
       .status("SUCCESS")
-      .customerId(customerId)
+      .customerId(customerId.asString())
       .build();
   }
 
@@ -92,7 +95,8 @@ public class UserController {
 
     Customer customer = Customer.builder()
       .fullName(form.getFullName())
-      .preferredRegion( RegionType.valueOf(form.getPreferredRegion()))
+//      .preferredRegion( RegionType.valueOf(form.getPreferredRegion()))
+      .id(CustomerPK.forRegion(form.getPreferredRegion()))
       .email(form.getEmail())
       .password(authHelper.encodePassword(form.getPassword()))
       .phoneNumber(form.getPhoneNumber())

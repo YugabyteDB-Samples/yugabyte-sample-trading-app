@@ -1,5 +1,6 @@
 package com.yugabyte.samples.trading.security;
 
+import com.yugabyte.samples.trading.model.RegionType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import lombok.Data;
 @Builder
 public final class SignUpResponse {
 
-  private Integer customerId;
+  private Integer accountNumber;
+  private RegionType region;
   private String login;
 }

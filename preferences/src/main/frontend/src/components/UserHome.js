@@ -37,13 +37,13 @@ export default function UserHome() {
               Full Name : {profile.fullName}
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
-              Customer ID : {profile.customerId}
+              Account Number : {profile.id.accountNumber}
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               Email : {profile.email}
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
-              Region: {profile.preferredRegion}
+              Region: {profile.id.region}
             </Grid>
           </Grid>
           <Divider sx={{mt: 4, mb: 4}}/>
