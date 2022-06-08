@@ -3,12 +3,14 @@ package com.yugabyte.samples.trading.security;
 import com.yugabyte.samples.trading.ApiException;
 import com.yugabyte.samples.trading.model.Customer;
 import com.yugabyte.samples.trading.model.CustomerPK;
+import com.yugabyte.samples.trading.model.RegionType;
 import com.yugabyte.samples.trading.repository.CustomerRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +26,13 @@ public class UserController {
 
   private final CustomerRepository customers;
   private final JwtAuthHelper authHelper;
+  private final RegionType appRegion;
 
   @Autowired
-  public UserController(CustomerRepository customers, CustomerBasedUserDetailsService userDetailsService, JwtAuthHelper authHelper) {
+  public UserController(CustomerRepository customers, CustomerBasedUserDetailsService userDetailsService, JwtAuthHelper authHelper, @Value("${app.region:AP}") RegionType appRegion) {
     this.customers = customers;
     this.authHelper = authHelper;
+    this.appRegion = appRegion;
   }
 
   @PostMapping("/sign-up")
@@ -49,7 +53,7 @@ public class UserController {
   public PasswordResetResponse passwordReset(@Valid @RequestBody PasswordResetRequest request) {
     String login = request.login();
     String newPassword = "Password#123";
-    var customer = customers.getByEmail(login)
+    var customer = customers.findByIdRegionAndEmail(appRegion, login)
       .orElseThrow();
     customer.setPassword(authHelper.encodePassword(newPassword));
     log.info("{}: Password reset successful", login);
@@ -61,7 +65,7 @@ public class UserController {
   public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequest request) {
 
     String jwt = authHelper.processLoginAndGenerateJwt(request.getLogin(), request.getCredentials());
-    var customerId = customers.getByEmail(request.getLogin())
+    var customerId = customers.findByIdRegionAndEmail(appRegion, request.getLogin())
       .orElseThrow()
       .getId();
     return AuthenticationResponse.builder()
@@ -84,7 +88,7 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   @SecurityRequirement(name = "auth-header-bearer")
   public Customer getMe(Principal principal) {
-    return customers.getByEmail(principal.getName())
+    return customers.findByIdRegionAndEmail(appRegion, principal.getName())
       .orElseThrow();
   }
 
