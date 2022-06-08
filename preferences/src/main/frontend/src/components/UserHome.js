@@ -64,6 +64,7 @@ function DashboardContent() {
     <Grid container spacing={3}>
       {/* Chart */}
       <Grid item xs={12} md={8} lg={9}>
+
         <Paper
           sx={{
             p: 2,
@@ -118,13 +119,15 @@ function createChart(time, amount) {
 const chartData = [
   createChart('00:00', 0),
   createChart('03:00', 300),
-  createChart('06:00', 600),
-  createChart('09:00', 800),
-  createChart('12:00', 1500),
-  createChart('15:00', 2000),
-  createChart('18:00', 2400),
-  createChart('21:00', 2400),
-  createChart('24:00', undefined),
+  createChart('06:00', 200),
+  createChart('09:00', 100),
+  createChart('12:00', 400),
+  createChart('15:00', 900),
+  createChart('18:00', 700),
+  createChart('21:00', 400),
+  createChart('22:00', 500),
+  createChart('23:00', 600),
+  createChart('24:00', 600),
 ];
 
 function Chart() {
@@ -132,7 +135,7 @@ function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Today's NAV History</Title>
       <ResponsiveContainer>
         <LineChart
           data={chartData}
@@ -161,7 +164,7 @@ function Chart() {
                 ...theme.typography.body1,
               }}
             >
-              Sales ($)
+              NAV ($)
             </Label>
           </YAxis>
           <Line

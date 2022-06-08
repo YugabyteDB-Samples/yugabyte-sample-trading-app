@@ -87,7 +87,7 @@ const ApiClient = function () {
 
   /**
    * Signup user
-   * @param {SignUpRequest} form
+   * @param form {SignUpRequest} - Signup request form
    * @returns {Promise<SignUpResponse>}
    */
   this.signUp = function (form) {

@@ -1,5 +1,9 @@
 package com.yugabyte.samples.trading.model;
 
+import static com.yugabyte.samples.trading.model.DeliveryType.EDELIVERY;
+import static com.yugabyte.samples.trading.model.DeliveryType.US_MAIL;
+import static com.yugabyte.samples.trading.model.SubscriptionStatus.OPT_IN;
+import static com.yugabyte.samples.trading.model.SubscriptionStatus.OPT_OUT;
 import static javax.persistence.EnumType.STRING;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,22 +53,22 @@ public class Customer {
   private String phoneNumber;
 
   @Enumerated(STRING)
-  private DeliveryType accountStatementDelivery;
+  private DeliveryType accountStatementDelivery = US_MAIL;
 
   @Enumerated(STRING)
-  private DeliveryType taxFormsDelivery;
+  private DeliveryType taxFormsDelivery = EDELIVERY;
 
   @Enumerated(STRING)
-  private DeliveryType tradeConfirmation;
+  private DeliveryType tradeConfirmation = EDELIVERY;
 
   @Enumerated(STRING)
-  private SubscriptionStatus subscribeBlog;
+  private SubscriptionStatus subscribeBlog = OPT_IN;
 
   @Enumerated(STRING)
-  private SubscriptionStatus subscribeWebinar;
+  private SubscriptionStatus subscribeWebinar = OPT_IN;
 
   @Enumerated(STRING)
-  private SubscriptionStatus subscribeNewsletter;
+  private SubscriptionStatus subscribeNewsletter = OPT_OUT;
 
   @Column(insertable = false, updatable = false)
   private Instant createdDate;

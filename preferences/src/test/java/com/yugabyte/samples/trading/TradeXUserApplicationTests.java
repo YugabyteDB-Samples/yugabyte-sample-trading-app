@@ -86,7 +86,7 @@ class TradeXUserApplicationTests {
   void shouldCreateOneRecord() {
     var customer = Customer.builder()
       .fullName("Test Customer")
-      .id(CustomerPK.forRegion("AP"))
+      .id(new CustomerPK("AP", 10))
       .accountStatementDelivery(DeliveryType.EDELIVERY)
       .taxFormsDelivery(DeliveryType.EDELIVERY)
       .tradeConfirmation(DeliveryType.EDELIVERY)

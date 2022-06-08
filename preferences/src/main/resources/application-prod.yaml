@@ -4,9 +4,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
   datasource:
     username: superuser

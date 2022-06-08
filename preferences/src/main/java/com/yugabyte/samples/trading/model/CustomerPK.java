@@ -39,6 +39,10 @@ public final class CustomerPK implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer accountNumber;
 
+
+  public CustomerPK(String region, Integer accountNumber){
+    this(RegionType.valueOf(region), accountNumber);
+  }
   public static CustomerPK forRegion(RegionType region) {
     return new CustomerPK(region, null);
   }

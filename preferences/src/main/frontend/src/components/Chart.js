@@ -14,10 +14,13 @@ const data = [
   createData('06:00', 600),
   createData('09:00', 800),
   createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', undefined),
+  createData('15:00', 1200),
+  createData('18:00', 1000),
+  createData('21:00', 1300),
+  createData('22:00', 1500),
+  createData('23:00', 1600),
+  createData('24:00', 2000),
+
 ];
 
 export default function Chart() {

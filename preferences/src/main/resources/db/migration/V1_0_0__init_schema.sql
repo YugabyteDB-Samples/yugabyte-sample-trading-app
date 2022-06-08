@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS customers
   preferred_region           VARCHAR(20)  NOT NULL,
   account_statement_delivery VARCHAR(20)  NOT NULL DEFAULT ('US_MAIL'),
   tax_forms_delivery         VARCHAR(20)  NOT NULL DEFAULT ('EDELIVERY'),
-  trade_confirmation          VARCHAR(20)  NOT NULL DEFAULT ('EDELIVERY'),
+  trade_confirmation          VARCHAR(20) NOT NULL DEFAULT ('EDELIVERY'),
   subscribe_blog             VARCHAR(10)  NOT NULL DEFAULT ('OPT_IN'),
   subscribe_webinar          VARCHAR(10)  NOT NULL DEFAULT ('OPT_IN'),
   subscribe_newsletter       VARCHAR(10)  NOT NULL DEFAULT ('OPT_OUT'),
@@ -27,18 +27,18 @@ CREATE TABLE IF NOT EXISTS customers
 
   PRIMARY KEY (customer_id, preferred_region)
 ) PARTITION BY LIST (preferred_region);
-
-CREATE TABLESPACE us_tablespace WITH (
-  replica_placement='{ "num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"us-east-2","zone":"us-east-2c","min_num_replicas":1}]}'
-  );
-
-CREATE TABLESPACE eu_tablespace WITH (
-  replica_placement='{"num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"eu-central-1","zone":"eu-central-1c","min_num_replicas":1}]}'
-  );
-
-CREATE TABLESPACE ap_tablespace WITH (
-  replica_placement='{"num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"ap-southeast-1","zone":"ap-southeast-1c","min_num_replicas":1}]}'
-  );
+--
+-- CREATE TABLESPACE us_tablespace WITH (
+--   replica_placement='{ "num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"us-east-2","zone":"us-east-2c","min_num_replicas":1}]}'
+--   );
+--
+-- CREATE TABLESPACE eu_tablespace WITH (
+--   replica_placement='{"num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"eu-central-1","zone":"eu-central-1c","min_num_replicas":1}]}'
+--   );
+--
+-- CREATE TABLESPACE ap_tablespace WITH (
+--   replica_placement='{"num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"ap-southeast-1","zone":"ap-southeast-1c","min_num_replicas":1}]}'
+--   );
 
 
 CREATE TABLE IF NOT EXISTS customer_us
@@ -106,17 +106,3 @@ CREATE TABLE if not exists customer_ap
       )
     FOR VALUES IN ('AP')
   TABLESPACE ap_tablespace;
-
-create role flyway login;
-
-alter role flyway set force_global_transaction = TRUE;
-grant all privileges on database yugabyte to flyway;
-grant all privileges on all tables in schema public to flyway;
-grant all privileges on all sequences in schema public to flyway;
-grant all privileges on all functions in schema public to flyway;
-grant all privileges on all routines in schema public to flyway;
-grant all privileges on tablespace ap_tablespace to flyway;
-grant all privileges on tablespace eu_tablespace to flyway;
-grant all privileges on tablespace us_tablespace to flyway;
-grant all privileges ON SCHEMA public to flyway;
-

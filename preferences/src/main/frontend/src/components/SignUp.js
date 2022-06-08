@@ -17,18 +17,18 @@ import ApiClient from "./ApiClient";
 export default function SignUp() {
   const api = new ApiClient();
 
-  let [firstName, setFirstName] = useState('');
-  let [lastName, setLastName] = useState('');
+  let [fullName, setFullName] = useState('');
   let [email, setEmail] = useState('');
   let [region, setRegion] = useState('');
   let [password, setPassword] = useState('');
+  let [phoneNumber, setPhoneNumber] = useState('');
   let [step, setStep] = useState('initial');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
     const form = {
-      firstName, lastName, email, password, preferredRegion: region
+      fullName,  email, password, preferredRegion: region, phoneNumber
     }
     api.signUp(form)
     .then(() => {
@@ -56,27 +56,16 @@ export default function SignUp() {
     return (<PageLayout icon={<LockOutlinedIcon/>} title={"Sign Up"} maxWidth="sm">
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12}>
             <TextField
               autoComplete="given-name"
-              name="firstName"
+              name="fullName"
               required
               fullWidth
-              id="firstName"
-              label="First Name"
+              id="fullName"
+              label="Full Name"
               autoFocus
-              onChange={e => setFirstName(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              id="lastName"
-              label="Last Name"
-              name="lastName"
-              autoComplete="family-name"
-              onChange={e => setLastName(e.target.value)}
+              onChange={e => setFullName(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -88,6 +77,17 @@ export default function SignUp() {
               name="email"
               autoComplete="email"
               onChange={e => setEmail(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="phoneNumber"
+              label="Phone Number"
+              name="phoneNumber"
+              autoComplete="phoneNumber"
+              onChange={e => setPhoneNumber(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>

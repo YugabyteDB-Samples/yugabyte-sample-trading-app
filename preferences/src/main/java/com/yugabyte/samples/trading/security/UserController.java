@@ -92,19 +92,17 @@ public class UserController {
     if (customers.existsByEmail(form.getEmail())) {
       throw new ApiException("Failed to complete signup", "email", form.getEmail(), "Already in use");
     }
+    CustomerPK id = new CustomerPK(form.getPreferredRegion(), customers.nextAccountNumber());
+    var newCustomer = new Customer();
+    newCustomer.setId(id);
+    newCustomer.setFullName(form.getFullName());
+    newCustomer.setEmail(form.getEmail());
+    newCustomer.setPhoneNumber(form.getPhoneNumber());
+    newCustomer.setPassword(authHelper.encodePassword(form.getPassword()));
+    newCustomer.setEnabled(true);
 
-    Customer customer = Customer.builder()
-      .fullName(form.getFullName())
-//      .preferredRegion( RegionType.valueOf(form.getPreferredRegion()))
-      .id(CustomerPK.forRegion(form.getPreferredRegion()))
-      .email(form.getEmail())
-      .password(authHelper.encodePassword(form.getPassword()))
-      .phoneNumber(form.getPhoneNumber())
-      .enabled(true)
-      .build();
-
-    customer = customers.save(customer);
-    return customer;
+    newCustomer = customers.save(newCustomer);
+    return newCustomer;
   }
 
   public record PasswordResetRequest(String login) {
