@@ -39,7 +39,10 @@ spring:
       maximum-pool-size: 20
       auto-commit: false
       keepalive-time: 120000
-      connection-init-sql: "set search_path=public;"
+      connection-init-sql: "set search_path=public; "
+      connection-test-query: "select * from customers limit 1;"
+      validation-timeout: 120000
+
   data:
     rest:
       base-path: /api/v1
@@ -65,5 +68,9 @@ logging:
     org:
       springframework:
         security: DEBUG
-    web: trace
+    web: debug
     sql: debug
+
+    com:
+      zaxxer:
+        hikari: debug

@@ -2,3 +2,9 @@ app:
   topology-keys: aws.eu-central-1.eu-central-1c
   initial-ysql-host: 127.0.0.2
   region: EU
+
+
+spring:
+  datasource:
+    hikari:
+      connection-test-query: "select * from customers where preferred_region = 'EU' limit 1;"

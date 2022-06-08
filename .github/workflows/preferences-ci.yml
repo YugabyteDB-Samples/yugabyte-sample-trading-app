@@ -34,31 +34,16 @@ jobs:
 #        with:
 #          name: Package
 #          path: preferences/target/staging
-      - name: create release
-        uses: actions/create-release@v1
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
         id: create_release
         with:
-          draft: false
-          prerelease: false
-          release_name: Snapshot Release v0.0.1
-          tag_name: latest
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - name: upload linux artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./preferences/target/tradex-0.0.1-SNAPSHOT.jar
-          asset_name: tradex-0.0.1-SNAPSHOT.jar
-          asset_content_type: application/gzip
-      - name: upload linux artifact
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./preferences/scripts/tradex-ubuntu.sh
-          asset_name: tradex-ubuntu.sh
-          asset_content_type: text/plain
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          name: Release v0.0.1-SNAPSHOT
+          generateReleaseNotes: true
+          artifacts: "./preferences/target/tradex-0.0.1-SNAPSHOT.jar,./preferences/scripts/tradex-ubuntu.sh"
+          allowUpdate: true
+          replacesArtifacts: true
+          removeArtifacts: true

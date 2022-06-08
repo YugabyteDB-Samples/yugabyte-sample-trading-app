@@ -5,6 +5,7 @@
 set -Eeuo pipefail
 APP_NAME=tradex
 APP_REGION=${APP_REGION:-ap}
+SCRIPT="${BASH_SOURCE[0]}"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_DIR=$( cd ${SCRIPT_DIR} ; pwd)
 JAR_URL=${JAR_URL:="https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-0.0.1-SNAPSHOT.jar"}
@@ -21,22 +22,32 @@ function setup(){
   # Get this from the github project page https://github.com/yugabyte/yugabyte-sample-trading-app/releases/latest
   wget -O tradex.jar $JAR_URL
 }
-function run(){
+function app-run(){
   INITIAL_YSQL_HOST=${INITIAL_YSQL_HOST:?"INITIAL_YSQL_HOST not set"}
   echo java -jar tradex.jar  \
     $JAVA_OPTS \
     --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
     --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
-    $*
+    "$@"
   java -jar tradex.jar  \
     $JAVA_OPTS \
     --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
     --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
-    $*
+    "$@"
 }
 function start(){
-  nohup run $* &> ${LOG_FILE} &
+  nohup $SCRIPT app-run "$@" &> ${LOG_FILE} &
   echo $! > ${PID_FILE}
+}
+function status(){
+  if [[ -e $PID_FILE ]] ; then
+    echo "RUNNING: Application running at PID [`cat ${PID_FILE}`]"
+  else
+    echo "STOPPED"
+  fi
+}
+function logs(){
+  tail -f $LOG_FILE
 }
 function stop(){
   kill -9 $(cat ${PID_FILE})
@@ -47,6 +58,6 @@ function stop(){
 OP=$1; shift
 [[ $OP == "" ]] && OP=start
 
-$OP $*
+$OP "$@"
 
 
