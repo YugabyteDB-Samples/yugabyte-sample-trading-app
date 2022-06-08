@@ -25,7 +25,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
-        run: ./mvnw --batch-mode --update-snapshots package verify deploy
+        run: ./mvnw --batch-mode --update-snapshots deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      - name: Copy artifacts
@@ -44,6 +44,7 @@ jobs:
           name: Release v0.0.1-SNAPSHOT
           generateReleaseNotes: true
           artifacts: "./preferences/target/tradex-0.0.1-SNAPSHOT.jar,./preferences/scripts/tradex-ubuntu.sh"
-          allowUpdate: true
+          tag: latest
+          allowUpdates: true
           replacesArtifacts: true
           removeArtifacts: true
