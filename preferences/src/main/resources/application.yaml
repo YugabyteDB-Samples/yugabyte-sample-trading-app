@@ -6,6 +6,7 @@ app:
 # For AP
   topology-keys: aws.ap-southeast-1.ap-southeast-1c
   initial-ysql-host: 127.0.0.3
+  region: AP
   security:
     jwt:
       secret: cccccclvkgnllrhrngucjbivrehvjcnkfvfihildhfcg
