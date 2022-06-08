@@ -53,22 +53,22 @@ public class Customer {
   private String phoneNumber;
 
   @Enumerated(STRING)
-  private DeliveryType accountStatementDelivery = US_MAIL;
+  @Builder.Default DeliveryType accountStatementDelivery = US_MAIL;
 
   @Enumerated(STRING)
-  private DeliveryType taxFormsDelivery = EDELIVERY;
+  @Builder.Default private DeliveryType taxFormsDelivery = EDELIVERY;
 
   @Enumerated(STRING)
-  private DeliveryType tradeConfirmation = EDELIVERY;
+  @Builder.Default private DeliveryType tradeConfirmation = EDELIVERY;
 
   @Enumerated(STRING)
-  private SubscriptionStatus subscribeBlog = OPT_IN;
+  @Builder.Default private SubscriptionStatus subscribeBlog = OPT_IN;
 
   @Enumerated(STRING)
-  private SubscriptionStatus subscribeWebinar = OPT_IN;
+  @Builder.Default private SubscriptionStatus subscribeWebinar = OPT_IN;
 
   @Enumerated(STRING)
-  private SubscriptionStatus subscribeNewsletter = OPT_OUT;
+  @Builder.Default private SubscriptionStatus subscribeNewsletter = OPT_OUT;
 
   @Column(insertable = false, updatable = false)
   private Instant createdDate;
