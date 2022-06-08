@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 # Get this script via wget
-# wget https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/main/tradex-ubuntu.sh
+# wget https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-ubuntu.sh
 
 set -Eeuo pipefail
 APP_NAME=tradex
 APP_REGION=${APP_REGION:-ap}
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_DIR=$( cd ${SCRIPT_DIR} ; pwd)
-JAR_URL=${JAR_URL:="https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/main/tradex-0.0.1-SNAPSHOT.jar"}
-INITIAL_YSQL_HOST=${INITIAL_YSQL_HOST:=127.0.0.3}
-TOPOLOGY_KEYS=${TOPOLOGY_KEYS:=aws.ap-southeast-1.ap-southeast-1c}
+JAR_URL=${JAR_URL:="https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-0.0.1-SNAPSHOT.jar"}
+SPRING_ACTIVE_PROFILES=${SPRING_ACTIVE_PROFILES:=ysql,prod,$APP_REGION}
 WORK_DIR=${WORK_DIR:=.}
 JAVA_OPTS=${JAVA_OPTS:=}
-SPRING_ACTIVE_PROFILES=${SPRING_ACTIVE_PROFILES:=ysql,prod,$APP_REGION}
 LOG_FILE=${WORK_DIR}/${APP_NAME}.log
 PID_FILE=${WORK_DIR}/${APP_NAME}.pid
 
@@ -24,21 +22,17 @@ function setup(){
   wget -O tradex.jar $JAR_URL
 }
 function run(){
+  INITIAL_YSQL_HOST=${INITIAL_YSQL_HOST:?"INITIAL_YSQL_HOST not set"}
   echo java -jar tradex.jar  \
-      $JAVA_OPTS \
-      --spring.flyway.enabled=${SPRING_FLYWAY_ENABLED} \
-      --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
-      --app.topology-keys=${TOPOLOGY_KEYS}  \
-      --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
-      $*
+    $JAVA_OPTS \
+    --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
+    --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
+    $*
   java -jar tradex.jar  \
-        $JAVA_OPTS \
-        --spring.flyway.enabled=${SPRING_FLYWAY_ENABLED} \
-        --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
-        --app.topology-keys=${TOPOLOGY_KEYS}  \
-        --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
-        $*
-
+    $JAVA_OPTS \
+    --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
+    --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
+    $*
 }
 function start(){
   nohup run $* &> ${LOG_FILE} &
