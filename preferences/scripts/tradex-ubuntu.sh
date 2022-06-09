@@ -9,54 +9,67 @@ SCRIPT="${BASH_SOURCE[0]}"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_DIR=$( cd ${SCRIPT_DIR} ; pwd)
 JAR_URL=${JAR_URL:="https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-0.0.1-SNAPSHOT.jar"}
-SCRIPT_URL=${JAR_URL:="https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-ubuntu.sh"}
+SCRIPT_URL=${SCRIPT_URL:="https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-ubuntu.sh"}
 SPRING_ACTIVE_PROFILES=${SPRING_ACTIVE_PROFILES:=ysql,prod,$APP_REGION}
 WORK_DIR=${WORK_DIR:=.}
 JAVA_OPTS=${JAVA_OPTS:=}
 LOG_FILE=${WORK_DIR}/${APP_NAME}.log
-PID_FILE=${WORK_DIR}/${APP_NAME}.pid
 
 function setup(){
+  init
+  fetch-updates
+}
+function init(){
   sudo apt update
   sudo apt upgrade -qqy
   sudo apt install openjdk-17-jre -qqy
-  wget -O tradex.jar $JAR_URL
-  wget -O $SCRIPT $SCRIPT_URL
 }
 function fetch-updates(){
   wget -O tradex.jar $JAR_URL
-  wget -O $SCRIPT https://github.com/yugabyte/yugabyte-sample-trading-app/releases/download/latest/tradex-ubuntu.sh
+  wget -O $SCRIPT $SCRIPT_URL
 }
 function app-run(){
   INITIAL_YSQL_HOST=${INITIAL_YSQL_HOST:?"INITIAL_YSQL_HOST not set"}
-  echo java -jar tradex.jar  \
+  echo java \
     $JAVA_OPTS \
+    -jar tradex.jar  \
     --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
     --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
     "$@"
-  java -jar tradex.jar  \
+  java \
     $JAVA_OPTS \
+    -jar tradex.jar \
     --spring.profiles.active=${SPRING_ACTIVE_PROFILES}  \
     --app.initial-ysql-host=${INITIAL_YSQL_HOST} \
     "$@"
 }
 function start(){
   nohup $SCRIPT app-run "$@" &> ${LOG_FILE} &
-  echo $! > ${PID_FILE}
+  sleep 1
+  echo "App launched"
+  status
 }
 function status(){
-  if [[ -e $PID_FILE ]] ; then
-    echo "RUNNING: Application running at PID [`cat ${PID_FILE}`]"
+  PIDS=$(_pids | tr \\n ' ')
+  if [[ $PIDS != "" ]] ; then
+    echo "RUNNING: Application running at PIDs [$PIDS]"
   else
     echo "STOPPED"
   fi
+
+}
+function _pids(){
+  ps -af | grep "java.*-jar tradex.jar.*" | grep -v grep  | awk {'print $2'} || true
 }
 function logs(){
+
   tail -f $LOG_FILE
 }
 function stop(){
-  kill -9 $(cat ${PID_FILE})
-  rm ${PID_FILE}
+  _pids | while read pid; do
+    echo "Killing orphaned process $pid"
+    kill -9 $pid &>> /dev/null || true
+  done
 }
 
 
