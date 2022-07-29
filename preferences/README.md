@@ -72,10 +72,13 @@
    npm run start
    ```
 
-## deployment
+9. Deployment: App deployed for each region: US, AP and EU
 '''
 US on ubuntu@3.19.28.255
 APP_REGION=us INITIAL_YSQL_HOST=172.161.59.140 ./tradex-ubuntu.sh app-run
+
+AP on ubuntu@3.19.28.255
+APP_REGION=ap INITIAL_YSQL_HOST=172.161.59.140 ./tradex-ubuntu.sh app-run
 '''
 ## Links
 
