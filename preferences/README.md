@@ -77,8 +77,8 @@
 US on ubuntu@3.19.28.255
 APP_REGION=us INITIAL_YSQL_HOST=172.161.59.140 ./tradex-ubuntu.sh app-run
 
-AP on ubuntu@3.19.28.255
-APP_REGION=ap INITIAL_YSQL_HOST=172.161.59.140 ./tradex-ubuntu.sh app-run
+AP on ubuntu@13.214.136.26
+APP_REGION=ap INITIAL_YSQL_HOST=172.156.63.168 ./tradex-ubuntu.sh app-run
 ```
 ## Links
 
