@@ -5,4 +5,4 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    username: superuser
+    username: yugabyte
