@@ -18,6 +18,8 @@ import {Divider} from "@mui/material";
 
 export default function UserHome() {
   const api = new ApiClient();
+
+  
   let [profile, setProfile] = useState(null);
   useEffect(() => {
     if (profile == null) {
@@ -54,7 +56,11 @@ export default function UserHome() {
   )
 };
 
+
+
+
 function Dashboard() {
+
   return <DashboardContent/>;
 }
 
@@ -77,18 +83,9 @@ function DashboardContent() {
         </Paper>
       </Grid>
       {/* Recent Deposits */}
-      <Grid item xs={12} md={4} lg={3}>
-        <Paper
-          sx={{
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            height: 240,
-          }}
-        >
-          <Deposits/>
-        </Paper>
-      </Grid>
+    
+
+      
       {/* Recent Orders */}
       <Grid item xs={12}>
         <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
@@ -116,26 +113,31 @@ function createChart(time, amount) {
   return {time, amount};
 }
 
-const chartData = [
-  createChart('00:00', 0),
-  createChart('03:00', 300),
-  createChart('06:00', 200),
-  createChart('09:00', 100),
-  createChart('12:00', 400),
-  createChart('15:00', 900),
-  createChart('18:00', 700),
-  createChart('21:00', 400),
-  createChart('22:00', 500),
-  createChart('23:00', 600),
-  createChart('24:00', 600),
-];
+let chartInitialLoad=0;
+let chartData = [];
 
 function Chart() {
   const theme = useTheme();
+ 
+  const api = new ApiClient();
+  const [chartData,getChartData]=useState(0);
+ 
+  useEffect(() => {
+    if (chartInitialLoad === 0) {
+      api.getChart().then((chartDataCall) => {
+	  chartInitialLoad=1;
+     let chartData = [];
+
+	chartDataCall.forEach((obj,i) => {
+			chartData.push(createChart(obj.date,obj.price));});
+	getChartData(chartData);
+      });
+    }
+  });
 
   return (
     <React.Fragment>
-      <Title>Today's NAV History</Title>
+      <Title>Recent Orders</Title>
       <ResponsiveContainer>
         <LineChart
           data={chartData}
@@ -147,11 +149,13 @@ function Chart() {
           }}
         >
           <XAxis
+          	domain={[0,'auto']}
             dataKey="time"
             stroke={theme.palette.text.secondary}
             style={theme.typography.body2}
           />
-          <YAxis
+          <YAxis 
+          	domain={[0,'auto']}
             stroke={theme.palette.text.secondary}
             style={theme.typography.body2}
           >
@@ -164,11 +168,11 @@ function Chart() {
                 ...theme.typography.body1,
               }}
             >
-              NAV ($)
+              purchase ($)
             </Label>
           </YAxis>
           <Line
-            isAnimationActive={false}
+            isAnimationActive={true}
             type="monotone"
             dataKey="amount"
             stroke={theme.palette.primary.main}
@@ -204,40 +208,60 @@ function Deposits() {
 }
 
 // Generate Order Data
-function createOrderData(id, date, name, shipTo, paymentMethod, amount) {
-  return {id, date, name, shipTo, paymentMethod, amount};
+function createOrderData(id,symbol,type,price,time) {
+  return {id,symbol, type, price, time};
 }
 
-const orderRows = [
-  createOrderData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44,),
-  createOrderData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99,),
-  createOrderData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createOrderData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39,),
-  createOrderData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79,)
+let orderRows = [
+  //createOrderData('99','IBM','Stock Purchase','200.00','2022-08-15')
 ];
 
+let recentTradeDataInitialLoad=0;
+
 function Orders() {
+	
+	
+	//get the data
+	//
+	const api = new ApiClient();
+	const [recentTradeData,getRecentTradeData]=useState(0);
+ 
+  useEffect(() => {
+    if (recentTradeDataInitialLoad === 0) {
+      api.getRecentTrades().then((recentDataCall) => {
+	  recentTradeDataInitialLoad=1;
+
+
+	recentDataCall.forEach((obj,i) => {
+			let price=obj.price;
+			orderRows.push(createOrderData(obj.id,obj.symbol,obj.type,price,obj.time));
+			});
+		getRecentTradeData(orderRows);
+      });
+    }
+  });
+
+	
   return (
     <React.Fragment>
       <Title>Recent Orders</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
+            <TableCell>Symbol</TableCell>
+            <TableCell>Type</TableCell>
             <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
+            
             <TableCell align="right">Sale Amount</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {orderRows.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+               <TableCell>{row.symbol}</TableCell>
+              <TableCell>{row.type}</TableCell>
+              <TableCell>{row.time}</TableCell>
+              <TableCell align="right">{`${row.price}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>

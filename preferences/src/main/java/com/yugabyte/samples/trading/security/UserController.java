@@ -68,10 +68,14 @@ public class UserController {
     var customerId = customers.findByIdRegionAndEmail(appRegion, request.getLogin())
       .orElseThrow()
       .getId();
+    
+  
+    
     return AuthenticationResponse.builder()
       .token(jwt)
       .type("Bearer")
       .status("SUCCESS")
+      .accountNumber(customerId.accountString())
       .customerId(customerId.asString())
       .build();
   }

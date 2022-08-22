@@ -50,7 +50,9 @@ public final class CustomerPK implements Serializable {
   public static CustomerPK forRegion(String region) {
     return forRegion(RegionType.valueOf(region));
   }
-
+  public String accountString() {
+	  return accountNumber.toString();
+  }
   public String asString() {
     return String.format(ID_STRING_FORMAT, region.name(), accountNumber);
   }

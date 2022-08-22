@@ -1,3 +1,14 @@
+CREATE SEQUENCE trade_id_seq CACHE 1000;
+CREATE TABLE IF NOT EXISTS public.trades
+(
+    trade_id integer NOT NULL DEFAULT nextval('trade_id_seq'),
+    customer_id integer NOT NULL,
+    symbol character varying(6),
+    trade_type character varying(20),
+    order_time timestamp(0) without time zone DEFAULT now(),
+    bid_price double precision,
+    CONSTRAINT trades_pkey PRIMARY KEY (trade_id)
+)
 CREATE TABLE IF NOT EXISTS customers
 (
   customer_id                SERIAL,

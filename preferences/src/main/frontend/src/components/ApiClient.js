@@ -4,12 +4,15 @@ const ApiClient = function () {
 
   let token = null;
   let customerId = null;
+  let accountNum = null;
   let authHeaders = {};
 
   let {authData} = useAuth();
   if (authData != null) {
     token = authData.token;
     customerId = authData.customerId;
+    accountNum = authData.accountNumber;
+
     authHeaders = {
       "Authorization": "Bearer " + token
     };
@@ -118,7 +121,17 @@ const ApiClient = function () {
   this.passwordReset = function (login) {
     return _post("/api/v1/users/password-reset", {login: login});
   }
-
+ /**
+ * Get a customers chart data
+ * @returns {Promise<TradeChartResponse>}
+ */
+ this.getChart = function (customer ) {
+	return _get("/api/v1/trades/chartData/"+accountNum,customer);
+ }
+ 
+ this.getRecentTrades = function (customer) {
+	return _get("/api/v1/trades/recentOrders/"+accountNum,customer);
+	}
 }
 export default ApiClient;
 /**

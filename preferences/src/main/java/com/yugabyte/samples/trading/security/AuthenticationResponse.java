@@ -10,6 +10,7 @@ public class AuthenticationResponse {
 
   private String token;
   private String customerId;
+  private String accountNumber;
   private String type;
   private String status;
   private String message;
