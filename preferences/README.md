@@ -98,7 +98,7 @@ APP_REGION=ap INITIAL_YSQL_HOST=172.156.63.168 ./tradex-ubuntu.sh app-run
 
 1. Main UI (Desktop)
 
-    ![Main Desktop UI](docs/main-ui-desktop.png)
+    ![Main Desktop UI](downloads/userProfile.png)
 
 2. Main UI (Mobile)
 
