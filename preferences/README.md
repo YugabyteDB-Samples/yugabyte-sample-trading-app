@@ -98,10 +98,10 @@ APP_REGION=ap INITIAL_YSQL_HOST=172.156.63.168 ./tradex-ubuntu.sh app-run
 
 1. Main Page:
 
-    ![Main Page UI]![userProfile](https://user-images.githubusercontent.com/89855942/185966299-96809e9c-cfbd-40ce-a4a2-41673645be89.png)
+   ![userProfile](https://user-images.githubusercontent.com/89855942/185966299-96809e9c-cfbd-40ce-a4a2-41673645be89.png)
 
 
 2. User Preference:
 
-    ![Preference Page UI]![userSettings](https://user-images.githubusercontent.com/89855942/185966443-f581c172-9470-4c37-8a54-5c0506722057.png)
+  ![userSettings](https://user-images.githubusercontent.com/89855942/185966443-f581c172-9470-4c37-8a54-5c0506722057.png)
 
