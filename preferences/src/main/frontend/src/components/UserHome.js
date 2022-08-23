@@ -114,7 +114,6 @@ function createChart(time, amount) {
 }
 
 let chartData = [];
-
 function Chart() {
   const theme = useTheme();
   const api = new ApiClient();
@@ -123,11 +122,12 @@ function Chart() {
   useEffect(() => {
 	
 	  api.getChart().then((chartDataCall) => {
-     let chartData = [];
-	chartDataCall.forEach((obj,i) => {
-	chartData.push(createChart(obj.date,obj.price));});
-	getChartData(chartData);
-      });
+             let chartData = [];
+	     chartDataCall.forEach((obj,i) => {
+                 chartData.push(createChart(obj.date,parseFloat(obj.price)));
+             });
+	     getChartData(chartData);
+         });
   },[]);
 
   return (
