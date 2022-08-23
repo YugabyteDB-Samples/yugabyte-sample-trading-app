@@ -74,13 +74,13 @@
 
 9. Deployment: App deployed for each region: US, AP and EU
 ```
-US on ubuntu@3.19.28.255
+US East on ubuntu@3.19.28.255
 ssh -i "wwang_keypair.pem" ubuntu@3.19.28.255
 APP_REGION=us INITIAL_YSQL_HOST=172.161.59.140 ./tradex-ubuntu.sh app-run
 
-AP on ubuntu@13.214.136.26
-ssh -i "jk-keypair.pem" ubuntu@ec2-13-214-136-26.ap-southeast-1.compute.amazonaws.com
-APP_REGION=ap INITIAL_YSQL_HOST=172.156.63.168 ./tradex-ubuntu.sh app-run
+US West on ubuntu@
+
+EU West on ubuntu@
 ```
 ## Links
 
@@ -96,10 +96,12 @@ APP_REGION=ap INITIAL_YSQL_HOST=172.156.63.168 ./tradex-ubuntu.sh app-run
 
 ## Screenshots
 
-1. Main UI (Desktop)
+1. Main Page:
 
-    ![Main Desktop UI](docs/main-ui-desktop.png)
+   ![userProfile](https://user-images.githubusercontent.com/89855942/185966299-96809e9c-cfbd-40ce-a4a2-41673645be89.png)
 
-2. Main UI (Mobile)
 
-    ![Main Mobile UI](docs/main-ui-mobile.png)
+2. User Preference:
+
+  ![userSettings](https://user-images.githubusercontent.com/89855942/185966443-f581c172-9470-4c37-8a54-5c0506722057.png)
+

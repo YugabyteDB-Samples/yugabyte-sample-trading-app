@@ -1,5 +1,7 @@
+
 CREATE SEQUENCE trade_id_seq CACHE 1000;
-CREATE TABLE IF NOT EXISTS public.trades
+CREATE SEQUENCE buyer_id_seq CACHE 100;
+CREATE TABLE IF NOT EXISTS trades
 (
     trade_id integer NOT NULL DEFAULT nextval('trade_id_seq'),
     customer_id integer NOT NULL,
@@ -9,6 +11,16 @@ CREATE TABLE IF NOT EXISTS public.trades
     bid_price double precision,
     CONSTRAINT trades_pkey PRIMARY KEY (trade_id)
 )
+
+CREATE TABLE Buyer(
+    id integer NOT NULL DEFAULT nextval('buyer_id_seq'),
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    age integer,
+    goverment_id text,
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE IF NOT EXISTS customers
 (
   customer_id                SERIAL,
@@ -48,30 +60,15 @@ CREATE TABLESPACE us_tablespace
 {"cloud":"aws","region":"us-east-2","zone":"us-east-2a","min_num_replicas":2,"leader_preference":2},
 {"cloud":"aws","region":"us-west-2","zone":"us-west-2a","min_num_replicas":2,"leader_preference":1}]}'
       );
-      
- CREATE TABLESPACE eu_tablespace
-        WITH (
-            replica_placement = '{"num_replicas":5, "placement_blocks":[
-      {"cloud":"aws","region":"eu-west-1","zone":"eu-west-1a","min_num_replicas":2,"leader_preference":2},
-      {"cloud":"aws","region":"eu-central-1","zone":"eu-central-1a","min_num_replicas":2,"leader_preference":1}]}'
-            );
-      
-       CREATE TABLESPACE ap_tablespace
-              WITH (
-                  replica_placement = '{"num_replicas":5, "placement_blocks":[
-            {"cloud":"aws","region":"southeast-1","zone":"southeast-1a","min_num_replicas":2,"leader_preference":2},
-            {"cloud":"aws","region":"southeast-1","zone":"southeast-1a","min_num_replicas":2,"leader_preference":1}]}'
-                  );
+
+CREATE TABLESPACE eu_tablespace
+       WITH (
+       replica_placement = '{"num_replicas":3, "placement_blocks":[
+      {"cloud":"aws","region":"eu-west-1","zone":"eu-west-1a","min_num_replicas":1,"leader_preference":1},
+      {"cloud":"aws","region":"eu-west-1","zone":"eu-west-1a","min_num_replicas":1,"leader_preference":1},      
+      {"cloud":"aws","region":"eu-west-1","zone":"eu-west-1a","min_num_replicas":1,"leader_preference":1}]}'
+       );
                   
--- CREATE TABLESPACE eu_tablespace WITH (
---   replica_placement='{"num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"eu-central-1","zone":"eu-central-1c","min_num_replicas":1}]}'
---   );
---
--- CREATE TABLESPACE ap_tablespace WITH (
---   replica_placement='{"num_replicas": 1, "placement_blocks":[{"cloud":"aws","region":"ap-southeast-1","zone":"ap-southeast-1c","min_num_replicas":1}]}'
---   );
-
-
 CREATE TABLE IF NOT EXISTS customer_us
   PARTITION OF customers
     (
