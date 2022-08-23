@@ -2,3 +2,4 @@
 /secured-rest-api/
 /preferences/src/main/resources/static/**
 .DS_Store
+*.swp

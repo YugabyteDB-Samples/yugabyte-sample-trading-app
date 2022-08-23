@@ -113,27 +113,22 @@ function createChart(time, amount) {
   return {time, amount};
 }
 
-let chartInitialLoad=0;
 let chartData = [];
 
 function Chart() {
   const theme = useTheme();
- 
   const api = new ApiClient();
   const [chartData,getChartData]=useState(0);
  
   useEffect(() => {
-    if (chartInitialLoad === 0) {
-      api.getChart().then((chartDataCall) => {
-	  chartInitialLoad=1;
+	
+	  api.getChart().then((chartDataCall) => {
      let chartData = [];
-
 	chartDataCall.forEach((obj,i) => {
-			chartData.push(createChart(obj.date,obj.price));});
+	chartData.push(createChart(obj.date,obj.price));});
 	getChartData(chartData);
       });
-    }
-  });
+  },[]);
 
   return (
     <React.Fragment>
@@ -219,24 +214,17 @@ let orderRows = [
 let recentTradeDataInitialLoad=0;
 
 function Orders() {
-	
-	
-	//get the data
-	//
 	const api = new ApiClient();
 	const [recentTradeData,getRecentTradeData]=useState(0);
  
   useEffect(() => {
     if (recentTradeDataInitialLoad === 0) {
-      api.getRecentTrades().then((recentDataCall) => {
-	  recentTradeDataInitialLoad=1;
-
-
-	recentDataCall.forEach((obj,i) => {
-			let price=obj.price;
-			orderRows.push(createOrderData(obj.id,obj.symbol,obj.type,price,obj.time));
-			});
-		getRecentTradeData(orderRows);
+         api.getRecentTrades().then((recentDataCall) => {
+	 recentTradeDataInitialLoad=1;
+	 recentDataCall.forEach((obj,i) => {
+		orderRows.push(createOrderData(obj.id,obj.symbol,obj.type,obj.price,obj.time));
+		});
+	getRecentTradeData(orderRows);
       });
     }
   });
