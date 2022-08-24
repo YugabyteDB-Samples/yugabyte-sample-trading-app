@@ -43,7 +43,7 @@ export default function App() {
         <Box component="article"
              sx={{flexGrow: 1, height: "100vh", pt: 4, overflow: "auto", backgroundColor: (theme) => (theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900]),}}>
           <Routes>
-            <Route exact="true" path="/" element={<Home/>}/>
+            <Route exact="true" path="/" render={!signedIn} element={<SignIn/>}/> 
             <Route exact="true" path="home" element={<Home/>}/>
             <Route exact="true" path="error" element={<NotFound/>}/>
             <Route exact="true" path="sign-out" render={signedIn} element={<SignOut/>}/>
