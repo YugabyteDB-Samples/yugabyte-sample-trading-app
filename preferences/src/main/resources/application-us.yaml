@@ -1,5 +1,5 @@
 app:
-  topology-keys: aws.us-east-2.us-east-2c
+  topology-keys: aws.us-east-2.us-east-2b,aws.us-west-2.us-west-2b
   initial-ysql-host: 127.0.0.1
   region: US
 
