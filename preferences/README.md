@@ -80,6 +80,10 @@ APP_REGION=us INITIAL_YSQL_HOST=172.161.45.45 ./tradex-ubuntu.sh app-run
 
 US West on ubuntu@
 
+Set up App server: 
+sudo apt install openjdk-17-jdk
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
 EU West on ubuntu@
 ssh -i "wwang-eu-west-1.perm" ubuntu@3.249.130.136
 APP_REGION=eu INITIAL_YSQL_HOST=172.159.25.43 ./tradex-ubuntu.sh app-run
