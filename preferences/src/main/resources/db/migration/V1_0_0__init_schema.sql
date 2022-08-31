@@ -68,6 +68,12 @@ CREATE TABLESPACE eu_tablespace
       {"cloud":"aws","region":"eu-west-1","zone":"eu-west-1a","min_num_replicas":1,"leader_preference":1},      
       {"cloud":"aws","region":"eu-west-1","zone":"eu-west-1a","min_num_replicas":1,"leader_preference":1}]}'
        );
+       
+ CREATE TABLESPACE ap_tablespace
+       WITH (
+       replica_placement = '{"num_replicas":1, "placement_blocks":[
+      {"cloud":"aws","region":"ap-southeast-1","zone":"ap-southeast-1a","min_num_replicas":1,"leader_preference":1}]}'
+       );
                   
 CREATE TABLE IF NOT EXISTS customer_us
   PARTITION OF customers
