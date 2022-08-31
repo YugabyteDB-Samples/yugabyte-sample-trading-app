@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS trades
     order_time timestamp(0) without time zone DEFAULT now(),
     bid_price double precision,
     CONSTRAINT trades_pkey PRIMARY KEY (trade_id)
-)
+);
 
 CREATE TABLE Buyer(
     id integer NOT NULL DEFAULT nextval('buyer_id_seq'),
