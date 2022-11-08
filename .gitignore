@@ -3,3 +3,10 @@
 /preferences/src/main/resources/static/**
 .DS_Store
 *.swp
+.env-private
+*.tfvars
+*.tfstate
+*.tfstate.bak
+.terraform/
+*.tfplan
+*.tfstate.lock.info
