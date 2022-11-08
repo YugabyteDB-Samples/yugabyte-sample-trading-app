@@ -146,8 +146,4 @@ resource "aws_instance" "app" {
     ],
     var.post-provision-commands)
   }
-
-
 }
-
-

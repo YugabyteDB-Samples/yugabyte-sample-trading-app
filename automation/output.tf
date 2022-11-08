@@ -5,7 +5,7 @@ output "access-info" {
   ACCESS INFORMATION
   ==================
 
-  %{ for location, ip in local.vm-ips }
+  %{for location, ip in local.vm-ips}
   Location: ${location}
   ---------------------    
     SSH Access:    

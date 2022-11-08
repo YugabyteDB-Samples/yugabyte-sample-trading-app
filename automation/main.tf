@@ -10,7 +10,7 @@ terraform {
       version = "~> 2.0"
     }
     pkcs12 = {
-      source = "chilicat/pkcs12"
+      source  = "chilicat/pkcs12"
       version = "0.0.7"
     }
   }
@@ -26,106 +26,106 @@ locals {
 }
 
 
-module "Boston"{
+module "Boston" {
   providers = {
     aws = aws.Boston
   }
-  name = "Boston-tradex-${var.env-name}"
+  name   = "Boston-tradex-${var.env-name}"
   vpc_id = var.vpc-mapping.Boston.vpc
-  
-  
-  source = "./regional-resources"
-  public-key = tls_private_key.ssh-key.public_key_openssh
-  private-key = tls_private_key.ssh-key.private_key_openssh
-  admin-cidrs = local.admin-cidrs
-  tls-key-pem = local_file.tls-private-key-pem.filename
-  tls-cert-pem = local_file.tls-certificate-pem.filename
-  tls-ca-pem = local_file.tls-ca-pem.filename
-  tls-pkcs = local_file.tls-pkcs12.filename
+
+
+  source                  = "./regional-resources"
+  public-key              = tls_private_key.ssh-key.public_key_openssh
+  private-key             = tls_private_key.ssh-key.private_key_openssh
+  admin-cidrs             = local.admin-cidrs
+  tls-key-pem             = local_file.tls-private-key-pem.filename
+  tls-cert-pem            = local_file.tls-certificate-pem.filename
+  tls-ca-pem              = local_file.tls-ca-pem.filename
+  tls-pkcs                = local_file.tls-pkcs12.filename
   post-provision-commands = var.post-provision-commands
 }
 
-module "Washington"{
+module "Washington" {
   providers = {
     aws = aws.Washington
   }
-  name = "Washington-tradex-${var.env-name}"
+  name   = "Washington-tradex-${var.env-name}"
   vpc_id = var.vpc-mapping.Washington.vpc
-  
-  source = "./regional-resources"
-  public-key = tls_private_key.ssh-key.public_key_openssh
-  private-key = tls_private_key.ssh-key.private_key_openssh
-  admin-cidrs = local.admin-cidrs
-  tls-key-pem = local_file.tls-private-key-pem.filename
-  tls-cert-pem = local_file.tls-certificate-pem.filename
-  tls-ca-pem = local_file.tls-ca-pem.filename
-  tls-pkcs = local_file.tls-pkcs12.filename
+
+  source                  = "./regional-resources"
+  public-key              = tls_private_key.ssh-key.public_key_openssh
+  private-key             = tls_private_key.ssh-key.private_key_openssh
+  admin-cidrs             = local.admin-cidrs
+  tls-key-pem             = local_file.tls-private-key-pem.filename
+  tls-cert-pem            = local_file.tls-certificate-pem.filename
+  tls-ca-pem              = local_file.tls-ca-pem.filename
+  tls-pkcs                = local_file.tls-pkcs12.filename
   post-provision-commands = var.post-provision-commands
 }
 
 
-module "Mumbai"{
+module "Mumbai" {
   providers = {
     aws = aws.Mumbai
   }
-  name = "Mumbai-tradex-${var.env-name}"
+  name   = "Mumbai-tradex-${var.env-name}"
   vpc_id = var.vpc-mapping.Mumbai.vpc
-  
-  source = "./regional-resources"
-  public-key = tls_private_key.ssh-key.public_key_openssh
-  private-key = tls_private_key.ssh-key.private_key_openssh
-  admin-cidrs = local.admin-cidrs
-  tls-key-pem = local_file.tls-private-key-pem.filename
-  tls-cert-pem = local_file.tls-certificate-pem.filename
-  tls-ca-pem = local_file.tls-ca-pem.filename
-  tls-pkcs = local_file.tls-pkcs12.filename
+
+  source                  = "./regional-resources"
+  public-key              = tls_private_key.ssh-key.public_key_openssh
+  private-key             = tls_private_key.ssh-key.private_key_openssh
+  admin-cidrs             = local.admin-cidrs
+  tls-key-pem             = local_file.tls-private-key-pem.filename
+  tls-cert-pem            = local_file.tls-certificate-pem.filename
+  tls-ca-pem              = local_file.tls-ca-pem.filename
+  tls-pkcs                = local_file.tls-pkcs12.filename
   post-provision-commands = var.post-provision-commands
 }
 
 
-module "Sydney"{
+module "Sydney" {
   providers = {
     aws = aws.Sydney
   }
-  name = "Sydney-tradex-${var.env-name}"
+  name   = "Sydney-tradex-${var.env-name}"
   vpc_id = var.vpc-mapping.Sydney.vpc
-  
-  source = "./regional-resources"
-  public-key = tls_private_key.ssh-key.public_key_openssh
-  private-key = tls_private_key.ssh-key.private_key_openssh
-  admin-cidrs = local.admin-cidrs
-  tls-key-pem = local_file.tls-private-key-pem.filename
-  tls-cert-pem = local_file.tls-certificate-pem.filename
-  tls-ca-pem = local_file.tls-ca-pem.filename
-  tls-pkcs = local_file.tls-pkcs12.filename
+
+  source                  = "./regional-resources"
+  public-key              = tls_private_key.ssh-key.public_key_openssh
+  private-key             = tls_private_key.ssh-key.private_key_openssh
+  admin-cidrs             = local.admin-cidrs
+  tls-key-pem             = local_file.tls-private-key-pem.filename
+  tls-cert-pem            = local_file.tls-certificate-pem.filename
+  tls-ca-pem              = local_file.tls-ca-pem.filename
+  tls-pkcs                = local_file.tls-pkcs12.filename
   post-provision-commands = var.post-provision-commands
 }
 
 
-module "London"{
+module "London" {
   providers = {
     aws = aws.London
   }
-  name = "London-tradex-${var.env-name}"
+  name   = "London-tradex-${var.env-name}"
   vpc_id = var.vpc-mapping.London.vpc
-  
-  source = "./regional-resources"
-  public-key = tls_private_key.ssh-key.public_key_openssh
-  private-key = tls_private_key.ssh-key.private_key_openssh
-  admin-cidrs = local.admin-cidrs
-  tls-key-pem = local_file.tls-private-key-pem.filename
-  tls-cert-pem = local_file.tls-certificate-pem.filename
-  tls-ca-pem = local_file.tls-ca-pem.filename
-  tls-pkcs = local_file.tls-pkcs12.filename
+
+  source                  = "./regional-resources"
+  public-key              = tls_private_key.ssh-key.public_key_openssh
+  private-key             = tls_private_key.ssh-key.private_key_openssh
+  admin-cidrs             = local.admin-cidrs
+  tls-key-pem             = local_file.tls-private-key-pem.filename
+  tls-cert-pem            = local_file.tls-certificate-pem.filename
+  tls-ca-pem              = local_file.tls-ca-pem.filename
+  tls-pkcs                = local_file.tls-pkcs12.filename
   post-provision-commands = var.post-provision-commands
 }
 
 locals {
   vm-ips = {
-    Boston = module.Boston.ip
+    Boston     = module.Boston.ip
     Washington = module.Washington.ip
-    London = module.London.ip
-    Mumbai = module.Mumbai.ip
-    Sydney = module.Sydney.ip
+    London     = module.London.ip
+    Mumbai     = module.Mumbai.ip
+    Sydney     = module.Sydney.ip
   }
 }
