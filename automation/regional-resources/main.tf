@@ -97,6 +97,24 @@ data "aws_subnets" "subnets" {
     name   = "vpc-id"
     values = [var.vpc_id]
   }
+  filter {
+    name = "map-public-ip-on-launch"
+    values = ["true"]
+  }
+}
+data "cloudinit_config" "server_config" {
+  gzip          = true
+  base64_encode = true
+  part {
+    content_type = "text/cloud-config"
+    content = templatefile("${path.module}/templates/cloudconfig.yaml.tftpl", {
+      tls-cert-pem = var.tls-cert-pem
+      tls-ca-pem = var.tls-ca-pem
+      tls-key-pem = var.tls-key-pem
+      tls-pkcs = var.tls-pkcs
+      post-provision-commands = var.post-provision-commands
+    })
+  }
 }
 resource "aws_instance" "app" {
   ami           = local.ami-id
@@ -110,40 +128,5 @@ resource "aws_instance" "app" {
     aws_security_group.sg.id
   ]
   subnet_id = data.aws_subnets.subnets.ids[0]
-
-  connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    private_key = var.private-key 
-    host     = self.public_ip
-  }
-  provisioner "file" {
-    source      = var.tls-cert-pem
-    destination = "/home/ubuntu/cert.pem"
-  }
-  provisioner "file" {
-    source      = var.tls-key-pem
-    destination = "/home/ubuntu/key.pem"
-  }
-  provisioner "file" {
-    source      = var.tls-ca-pem
-    destination = "/home/ubuntu/ca.pem"
-  }
-  provisioner "file" {
-    source = var.tls-pkcs
-    destination = "/home/ubuntu/tls.p12"
-  } 
-  provisioner "remote-exec" {
-    inline = concat([
-      "curl -fsSL https://get.docker.com | sudo bash",
-      "sudo apt-get install -y uidmap",
-      "dockerd-rootless-setuptool.sh install", 
-      "sudo setcap cap_net_bind_service=ep $(which rootlesskit)",
-      "systemctl --user restart docker",
-      "echo export DOCKER_HOST=unix:///run/user/1000/docker.sock >> ~/.bashrc",
-      "export DOCKER_HOST=unix:///run/user/1000/docker.sock",
-      "sleep 5"
-    ],
-    var.post-provision-commands)
-  }
+  user_data = data.cloudinit_config.server_config.rendered
 }
