@@ -1,0 +1,58 @@
+#cloud-config
+apt:
+  sources:
+    docker.list:
+      source: deb [arch=amd64] https://download.docker.com/linux/ubuntu $RELEASE stable
+      keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+
+# package_update: true
+# package_upgrade: true
+
+groups:
+  - docker
+
+system_info:
+  default_user:
+    groups: [docker]
+
+
+packages:
+  - docker-ce 
+  - docker-ce-cli
+  - containerd.io
+  - docker-compose-plugin
+  - unattended-upgrades
+
+write_files: 
+- path: /home/ubuntu/tls.p12
+  owner: ubuntu:ubuntu
+  permissions: "0600"
+  defer: true
+  encoding: b64
+  content: |+
+    ${indent(4,tls-pkcs)}
+- path: /home/ubuntu/cert.pem
+  owner: ubuntu:ubuntu
+  permissions: "0600"
+  defer: true
+  content: |+
+    ${indent(4,tls-cert-pem)}
+- path: /home/ubuntu/key.pem
+  owner: ubuntu:ubuntu
+  permissions: "0600"
+  defer: true
+  content: |+
+    ${indent(4,tls-key-pem)}
+- path: /home/ubuntu/ca.pem
+  owner: ubuntu:ubuntu
+  permissions: "0600"
+  defer: true
+  content: |+
+    ${indent(4, tls-ca-pem)}
+
+
+runcmd:
+%{ for cmd in post-provision-commands ~}
+- |
+  ${indent(2,cmd)}
+%{ endfor ~}
