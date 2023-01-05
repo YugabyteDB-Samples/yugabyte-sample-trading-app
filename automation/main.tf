@@ -38,10 +38,10 @@ module "Boston" {
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
   admin-cidrs             = local.admin-cidrs
-  tls-key-pem             = local_file.tls-private-key-pem.filename
-  tls-cert-pem            = local_file.tls-certificate-pem.filename
-  tls-ca-pem              = local_file.tls-ca-pem.filename
-  tls-pkcs                = local_file.tls-pkcs12.filename
+  tls-key-pem             = local_file.tls-private-key-pem.content
+  tls-cert-pem            = local_file.tls-certificate-pem.content
+  tls-ca-pem              = local_file.tls-ca-pem.content
+  tls-pkcs                = local_file.tls-pkcs12.content_base64
   post-provision-commands = var.post-provision-commands
 }
 
@@ -56,10 +56,10 @@ module "Washington" {
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
   admin-cidrs             = local.admin-cidrs
-  tls-key-pem             = local_file.tls-private-key-pem.filename
-  tls-cert-pem            = local_file.tls-certificate-pem.filename
-  tls-ca-pem              = local_file.tls-ca-pem.filename
-  tls-pkcs                = local_file.tls-pkcs12.filename
+  tls-key-pem             = local_file.tls-private-key-pem.content
+  tls-cert-pem            = local_file.tls-certificate-pem.content
+  tls-ca-pem              = local_file.tls-ca-pem.content
+  tls-pkcs                = local_file.tls-pkcs12.content_base64
   post-provision-commands = var.post-provision-commands
 }
 
@@ -75,10 +75,10 @@ module "Mumbai" {
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
   admin-cidrs             = local.admin-cidrs
-  tls-key-pem             = local_file.tls-private-key-pem.filename
-  tls-cert-pem            = local_file.tls-certificate-pem.filename
-  tls-ca-pem              = local_file.tls-ca-pem.filename
-  tls-pkcs                = local_file.tls-pkcs12.filename
+  tls-key-pem             = local_file.tls-private-key-pem.content
+  tls-cert-pem            = local_file.tls-certificate-pem.content
+  tls-ca-pem              = local_file.tls-ca-pem.content
+  tls-pkcs                = local_file.tls-pkcs12.content_base64
   post-provision-commands = var.post-provision-commands
 }
 
@@ -94,10 +94,10 @@ module "Sydney" {
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
   admin-cidrs             = local.admin-cidrs
-  tls-key-pem             = local_file.tls-private-key-pem.filename
-  tls-cert-pem            = local_file.tls-certificate-pem.filename
-  tls-ca-pem              = local_file.tls-ca-pem.filename
-  tls-pkcs                = local_file.tls-pkcs12.filename
+  tls-key-pem             = local_file.tls-private-key-pem.content
+  tls-cert-pem            = local_file.tls-certificate-pem.content
+  tls-ca-pem              = local_file.tls-ca-pem.content
+  tls-pkcs                = local_file.tls-pkcs12.content_base64
   post-provision-commands = var.post-provision-commands
 }
 
@@ -113,10 +113,10 @@ module "London" {
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
   admin-cidrs             = local.admin-cidrs
-  tls-key-pem             = local_file.tls-private-key-pem.filename
-  tls-cert-pem            = local_file.tls-certificate-pem.filename
-  tls-ca-pem              = local_file.tls-ca-pem.filename
-  tls-pkcs                = local_file.tls-pkcs12.filename
+  tls-key-pem             = local_file.tls-private-key-pem.content
+  tls-cert-pem            = local_file.tls-certificate-pem.content
+  tls-ca-pem              = local_file.tls-ca-pem.content
+  tls-pkcs                = local_file.tls-pkcs12.content_base64
   post-provision-commands = var.post-provision-commands
 }
 
