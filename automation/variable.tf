@@ -34,3 +34,17 @@ variable "additional-admin-workstation-cidrs" {
   description = "Open firewall for admins from other IPs. Example: [ '116.12.12.12/32' ] for a single ip"
   default     = []
 }
+
+variable "yba" {
+  type = object({
+    api-endpoint                            = string
+    api-token                               = string
+    insecure                                = bool
+    single-region-universe-name             = string
+    multi-region-universe-name              = string
+    multi-region-read-replica-universe-name = string
+    geo-partition-universe-name             = string
+
+  })
+  description = "YugabyteDB Anywhere Portal Details"
+}
