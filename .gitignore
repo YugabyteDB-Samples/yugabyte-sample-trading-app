@@ -10,3 +10,4 @@
 .terraform/
 *.tfplan
 *.tfstate.lock.info
+.vscode/settings.json
