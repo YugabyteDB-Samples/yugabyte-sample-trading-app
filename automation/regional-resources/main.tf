@@ -168,54 +168,6 @@ resource "aws_eip" "app" {
   vpc = true
 }
 
-# resource "aws_security_group" "lb" {
-#   description = "Allow connection between NLB and target"
-#   vpc_id      = data.aws_vpc.vpc.id
-
-#   ingress {
-#     description = "Alow all traffic from Administrators IP"
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = var.admin-cidrs
-#   }
-#   ingress {
-#     description = "Allow HTTP traffic"
-#     from_port     = 80
-#     to_port     = 80
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   ingress {
-#     description = "Allow HTTPS traffic"
-#     from_port     = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   ingress {
-#     description = "Allow Alt HTTP traffic"
-#     from_port     = 8080
-#     to_port     = 8080
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   ingress {
-#     description = "Allow Alt HTTP traffic"    
-#     from_port     = 8081
-#     to_port     = 8081
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   ingress {
-#     description = "Allow Alt HTTPS traffic"
-#     from_port     = 8443
-#     to_port     = 8443
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-# }
-
 resource "aws_lb" "app" {
   name               = "${var.name}"
   load_balancer_type = "network"
