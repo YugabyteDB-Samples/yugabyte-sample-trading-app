@@ -28,16 +28,16 @@ Database DNS:
     %{endfor~}
 
     %{for db-dns in aws_route53_record.single-region-nodes[*]~}
-    ${db-dns.name} -> ${join(",", db-dns.records)}
+    ${db-dns.name} -> ${join(",", db-dns.records)} (${module.single-region-universe.nodes-topology-map[join("", db-dns.records)]})
     %{endfor~}
 
   Multi Region
     %{for db-dns in aws_route53_record.multi-region[*]~}
-    ${db-dns.name} -> ${join(",", db-dns.records)}
+    ${db-dns.name} -> ${join(",", db-dns.records)} 
     %{endfor~}
 
     %{for db-dns in aws_route53_record.multi-region-nodes[*]~}
-    ${db-dns.name} -> ${join(",", db-dns.records)}
+    ${db-dns.name} -> ${join(",", db-dns.records)} (${module.multi-region-universe.nodes-topology-map[join("", db-dns.records)]})
     %{endfor~}
 
   Multi Region Read Replicas
@@ -46,7 +46,7 @@ Database DNS:
     %{endfor~}
 
     %{for db-dns in aws_route53_record.multi-region-read-replica-nodes[*]~}
-    ${db-dns.name} -> ${join(",", db-dns.records)}
+    ${db-dns.name} -> ${join(",", db-dns.records)} (${module.multi-region-read-replica-universe.nodes-topology-map[join("", db-dns.records)]})
     %{endfor~}
 
   Geo Partitioned
@@ -55,7 +55,8 @@ Database DNS:
     %{endfor~}
 
     %{for db-dns in aws_route53_record.geopart-nodes[*]~}
-    ${db-dns.name} -> ${join(",", db-dns.records)}
+    ${db-dns.name} -> ${join(",", db-dns.records)} (${module.geo-partition-universe.nodes-topology-map[join("", db-dns.records)]})
     %{endfor~}
+
 EOF
 }
