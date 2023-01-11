@@ -19,8 +19,16 @@ locals {
   details = local.universe.universeDetails
   clusters = local.details.clusters
   nodeDetailsSet = local.details.nodeDetailsSet  
-  primary-cluster-uuid = one([ for c in local.clusters: c.uuid if c.clusterType == "PRIMARY" ])
-  pirmary-tservers = [for node in local.nodeDetailsSet: node.cloudInfo.private_ip if node.placementUuid == local.primary-cluster-uuid]
+  primary-cluster-uuid = one([ for c in local.clusters: c.uuid if c.clusterType == "PRIMARY" ])  
+  primary-tservers  = [for node in local.nodeDetailsSet: node.cloudInfo if node.placementUuid == local.primary-cluster-uuid]
+  primary-tservers-ips = sort([ for s in local.primary-tservers : s.private_ip ])
   read-replicas-uuids = [ for c in local.clusters: c.uuid if c.clusterType == "ASYNC"]
-  read-replica-tservers = [for node in local.nodeDetailsSet: node.cloudInfo.private_ip if contains( local.read-replicas-uuids, node.placementUuid)]
+  read-replica-tservers = [for node in local.nodeDetailsSet: node.cloudInfo if contains( local.read-replicas-uuids, node.placementUuid)]
+  read-replica-tservers-ips = sort([ for s in local.read-replica-tservers : s.private_ip ])
+  node-topology-map = merge({
+    for ts in local.primary-tservers: ts.private_ip => "${ts.cloud}.${ts.region}.${ts.az}"
+  },
+  {
+    for ts in local.read-replica-tservers: ts.private_ip => "${ts.cloud}.${ts.region}.${ts.az}"
+  })
 }
