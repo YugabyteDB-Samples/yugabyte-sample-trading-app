@@ -1,4 +1,3 @@
-
 provider "aws" {
   region = "us-east-2"
   alias  = "Boston"
@@ -22,13 +21,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  region = "us-east-1"
-  alias  = "Washington"
-  default_tags {
-    tags = var.tags
-  }
-}
-provider "aws" {
   region = "us-west-1"
   alias  = "N_California"
   default_tags {
@@ -38,6 +30,13 @@ provider "aws" {
 provider "aws" {
   region = "us-west-2"
   alias  = "Oregon"
+  default_tags {
+    tags = var.tags
+  }
+}
+provider "aws" {
+  region = "us-west-2"
+  alias  = "Washington"
   default_tags {
     tags = var.tags
   }
