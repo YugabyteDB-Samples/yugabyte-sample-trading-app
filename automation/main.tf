@@ -2,13 +2,13 @@ terraform {
   required_version = "~> 1.3.2"
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
     }
     acme = {
-      source  = "vancluever/acme"
+      source = "vancluever/acme"
     }
     pkcs12 = {
-      source  = "chilicat/pkcs12"
+      source = "chilicat/pkcs12"
     }
   }
 }
@@ -27,10 +27,8 @@ module "Boston" {
   providers = {
     aws = aws.Boston
   }
-  name   = "Boston-tradex-${var.env-name}"
-  vpc_id = var.vpc-mapping.Boston.vpc
-
-
+  name                    = "Boston-tradex-${var.env-name}"
+  vpc_id                  = var.vpc-mapping.Boston.vpc
   source                  = "./regional-resources"
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
@@ -46,9 +44,9 @@ module "Washington" {
   providers = {
     aws = aws.Washington
   }
-  name   = "Washington-tradex-${var.env-name}"
-  vpc_id = var.vpc-mapping.Washington.vpc
-
+  name                    = "Washington-tradex-${var.env-name}"
+  vpc_id                  = var.vpc-mapping.Washington.vpc
+  prefix                  = "tradex-${var.env-name}"
   source                  = "./regional-resources"
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
@@ -65,9 +63,9 @@ module "Mumbai" {
   providers = {
     aws = aws.Mumbai
   }
-  name   = "Mumbai-tradex-${var.env-name}"
-  vpc_id = var.vpc-mapping.Mumbai.vpc
-
+  name                    = "Mumbai-tradex-${var.env-name}"
+  vpc_id                  = var.vpc-mapping.Mumbai.vpc
+  prefix                  = "tradex-${var.env-name}"
   source                  = "./regional-resources"
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
@@ -84,9 +82,9 @@ module "Sydney" {
   providers = {
     aws = aws.Sydney
   }
-  name   = "Sydney-tradex-${var.env-name}"
-  vpc_id = var.vpc-mapping.Sydney.vpc
-
+  name                    = "Sydney-tradex-${var.env-name}"
+  vpc_id                  = var.vpc-mapping.Sydney.vpc
+  prefix                  = "tradex-${var.env-name}"
   source                  = "./regional-resources"
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
@@ -103,9 +101,9 @@ module "London" {
   providers = {
     aws = aws.London
   }
-  name   = "London-tradex-${var.env-name}"
-  vpc_id = var.vpc-mapping.London.vpc
-
+  name                    = "London-tradex-${var.env-name}"
+  vpc_id                  = var.vpc-mapping.London.vpc
+  prefix                  = "tradex-${var.env-name}"
   source                  = "./regional-resources"
   public-key              = tls_private_key.ssh-key.public_key_openssh
   private-key             = tls_private_key.ssh-key.private_key_openssh
