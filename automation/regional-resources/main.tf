@@ -64,14 +64,17 @@ locals {
 }
 
 resource "aws_key_pair" "ssh-key" {
-  key_name_prefix   = "tradex"
+  key_name_prefix   = var.prefix
   public_key = var.public-key
 }
 
 resource "aws_security_group" "sg" {  
-  name = var.name
+  name = "${var.prefix}-sg"
   description = "TradeX - Security Group"
   vpc_id      = var.vpc_id
+  tags = {
+    Name = "${var.prefix}-sg"
+  }
 
   ingress {
     description = "All all traffic from VPC IPs"
@@ -150,11 +153,12 @@ data "cloudinit_config" "server_config" {
 resource "aws_instance" "app" {
   ami           = local.ami-id
   tags = {
-    Name = "${var.name}"
+    Name = "${var.prefix}-app"
   }
   # associate_public_ip_address = true
   instance_type = var.machine-size
   key_name = aws_key_pair.ssh-key.key_name
+  
   vpc_security_group_ids = [
     aws_security_group.sg.id
   ]
@@ -168,7 +172,7 @@ resource "aws_eip" "app" {
 }
 
 resource "aws_lb" "app" {
-  name               = "${var.name}"
+  name               = "${var.prefix}-nlb"
   load_balancer_type = "network"
   # security_groups = [aws_security_group.lb.id]
 
@@ -191,7 +195,7 @@ locals{
 }
 resource "aws_lb_target_group" "app" {
   for_each = local.app_ports
-  # name     = "${var.name}${each.key}"
+  name     = "${var.prefix}-${each.value}-tg"
   port     = each.value
   protocol = "TCP"
   vpc_id   = data.aws_vpc.vpc.id
@@ -208,10 +212,14 @@ resource "aws_lb_target_group_attachment" "app" {
   target_group_arn = aws_lb_target_group.app[each.key].arn
   target_id        = aws_instance.app.id
   port             = each.value
+  
 }
 
 resource "aws_lb_listener" "app" {
   for_each = local.app_ports
+  tags = {
+    Name = "${var.prefix}-${each.value}"
+  }
 
   load_balancer_arn = aws_lb.app.arn
   protocol          = "TCP"
