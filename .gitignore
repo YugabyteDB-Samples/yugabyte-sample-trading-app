@@ -13,3 +13,5 @@
 .vscode/settings.json
 docs/TradeX-UX-Screenshots.pdf
 docs/Yugabyte - AWS Demo.pptx
+private/
+.direnv/
