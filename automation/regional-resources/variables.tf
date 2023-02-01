@@ -2,6 +2,12 @@ variable "name"{
   type = string
   description = "name for the vm"
 }
+variable "prefix" {
+  type = string
+  description = "small prefix for resource name"
+  default = "tradex"
+}
+
 variable "vpc_id"{
   type = string
   description = "VPC ID on AWS"
