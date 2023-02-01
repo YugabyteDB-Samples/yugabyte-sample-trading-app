@@ -11,7 +11,8 @@ locals {
 
   srmz-ips = module.single-region-universe.primary-tservers-ips
   mr-ips   = module.multi-region-universe.primary-tservers-ips
-  mrrr-ips = module.multi-region-read-replica-universe.read-replica-tservers-ips
+  mrrr-ips = module.multi-region-read-replica-universe.primary-tservers-ips
+  mrrr-rr-ips = module.multi-region-read-replica-universe.read-replica-tservers-ips
   geo-ips  = module.geo-partition-universe.primary-tservers-ips
 }
 resource "aws_route53_record" "regional-app" {
@@ -62,7 +63,7 @@ resource "aws_route53_record" "multi-region-nodes" {
 resource "aws_route53_record" "multi-region-read-replica" {
   count   = length(local.mrrr-ips) == 0 ? 0 : 1
   zone_id = data.aws_route53_zone.root.id
-  name    = "mr-rr-${local.db-dns-suffix}"
+  name    = "mrrr-${local.db-dns-suffix}"
   type    = "A"
   ttl     = "5"
   records = local.mrrr-ips
@@ -71,11 +72,30 @@ resource "aws_route53_record" "multi-region-read-replica" {
 resource "aws_route53_record" "multi-region-read-replica-nodes" {
   count   = length(local.mrrr-ips)
   zone_id = data.aws_route53_zone.root.id
-  name    = "mr-rr-n${count.index + 1}-${local.db-dns-suffix}"
+  name    = "mrrr-n${count.index + 1}-${local.db-dns-suffix}"
   type    = "A"
   ttl     = "5"
   records = [local.mrrr-ips[count.index]]
 }
+
+resource "aws_route53_record" "multi-region-read-replica-rr" {
+  count   = length(local.mrrr-rr-ips) == 0 ? 0 : 1
+  zone_id = data.aws_route53_zone.root.id
+  name    = "mrrr-rr-${local.db-dns-suffix}"
+  type    = "A"
+  ttl     = "5"
+  records = local.mrrr-ips
+}
+
+resource "aws_route53_record" "multi-region-read-replica-rr-nodes" {
+  count   = length(local.mrrr-rr-ips)
+  zone_id = data.aws_route53_zone.root.id
+  name    = "mrrr-rr-n${count.index + 1}-${local.db-dns-suffix}"
+  type    = "A"
+  ttl     = "5"
+  records = [local.mrrr-ips[count.index]]
+}
+
 
 resource "aws_route53_record" "geopart" {
   count   = length(local.geo-ips) == 0 ? 0 : 1
