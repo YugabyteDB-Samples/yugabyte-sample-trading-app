@@ -7,12 +7,12 @@ data "aws_route53_zone" "root" {
 locals {
   app-dns-suffix = "${var.env-name}-tradex.${data.aws_route53_zone.root.name}."
   db-dns-suffix  = "${var.env-name}-tradexdb.${data.aws_route53_zone.root.name}."
-  
-  
+
+
   srmz-ips = module.single-region-universe.primary-tservers-ips
-  mr-ips = module.multi-region-universe.primary-tservers-ips
-  mrrr-ips =  module.multi-region-read-replica-universe.read-replica-tservers-ips
-  geo-ips = module.geo-partition-universe.primary-tservers-ips
+  mr-ips   = module.multi-region-universe.primary-tservers-ips
+  mrrr-ips = module.multi-region-read-replica-universe.read-replica-tservers-ips
+  geo-ips  = module.geo-partition-universe.primary-tservers-ips
 }
 resource "aws_route53_record" "regional-app" {
   for_each = local.vm-ips
@@ -23,7 +23,7 @@ resource "aws_route53_record" "regional-app" {
   records  = [each.value]
 }
 
-resource "aws_route53_record" "single-region" {  
+resource "aws_route53_record" "single-region" {
   count   = length(local.srmz-ips) == 0 ? 0 : 1
   zone_id = data.aws_route53_zone.root.id
   name    = "srmz-${local.db-dns-suffix}"
@@ -33,7 +33,7 @@ resource "aws_route53_record" "single-region" {
 }
 
 resource "aws_route53_record" "single-region-nodes" {
-  count = length(local.srmz-ips)
+  count   = length(local.srmz-ips)
   zone_id = data.aws_route53_zone.root.id
   name    = "srmz-n${count.index + 1}-${local.db-dns-suffix}"
   type    = "A"
@@ -51,7 +51,7 @@ resource "aws_route53_record" "multi-region" {
 }
 
 resource "aws_route53_record" "multi-region-nodes" {
-  count = length(local.mr-ips)
+  count   = length(local.mr-ips)
   zone_id = data.aws_route53_zone.root.id
   name    = "mr-n${count.index + 1}-${local.db-dns-suffix}"
   type    = "A"
@@ -69,7 +69,7 @@ resource "aws_route53_record" "multi-region-read-replica" {
 }
 
 resource "aws_route53_record" "multi-region-read-replica-nodes" {
-  count = length(local.mrrr-ips)
+  count   = length(local.mrrr-ips)
   zone_id = data.aws_route53_zone.root.id
   name    = "mr-rr-n${count.index + 1}-${local.db-dns-suffix}"
   type    = "A"
@@ -87,7 +87,7 @@ resource "aws_route53_record" "geopart" {
 }
 
 resource "aws_route53_record" "geopart-nodes" {
-  count = length(local.geo-ips)
+  count   = length(local.geo-ips)
   zone_id = data.aws_route53_zone.root.id
   name    = "geo-n${count.index + 1}-${local.db-dns-suffix}"
   type    = "A"
