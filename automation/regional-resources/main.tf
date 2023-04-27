@@ -126,11 +126,11 @@ resource "aws_security_group" "sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    description = "Alow all traffic from Administrators IP"
+    description = "Alow all traffic from VPC"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = var.admin-cidrs
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block]
   }
 }
 
@@ -147,6 +147,7 @@ data "cloudinit_config" "server_config" {
       tls-key-pem = var.tls-key-pem
       tls-pkcs = var.tls-pkcs
       post-provision-commands = var.post-provision-commands
+      tradex-env = var.tradex-env
     })
   }
 }
@@ -231,3 +232,32 @@ resource "aws_lb_listener" "app" {
   }
 }
 
+
+
+
+
+resource "aws_ec2_managed_prefix_list" "allow-remote" {
+  name           = "${var.prefix}-allow-remote"
+  address_family = "IPv4"
+  max_entries    = 20
+  tags = {
+    Name = "${var.prefix}-allow-remote"
+  }
+}
+resource "aws_ec2_managed_prefix_list_entry" "allow-remote" {
+  count       = length(var.admin-cidrs)
+  cidr           = var.admin-cidrs[count.index]
+  description    = var.admin-cidrs[count.index]
+  prefix_list_id = aws_ec2_managed_prefix_list.allow-remote.id
+}
+
+
+resource "aws_security_group_rule" "yba-node-allow-mpl" {
+  type              = "ingress"
+  description       =  "Allow incoming from known machines"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = aws_security_group.sg.id
+  prefix_list_ids   = [aws_ec2_managed_prefix_list.allow-remote.id]
+}
