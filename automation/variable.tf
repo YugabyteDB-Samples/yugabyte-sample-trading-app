@@ -48,3 +48,30 @@ variable "yba" {
   })
   description = "YugabyteDB Anywhere Portal Details"
 }
+
+variable "docker-image-dev" {
+  type = string
+  default = "ssaranga/tradex-app-dev:latest"
+}
+
+variable "docker-image-prod" {
+  type = string
+  default = "ssaranga/tradex-app-final:11"
+}
+
+variable "db-name" {
+  type = string
+  description = "Namr of database"
+  default = "yugabyte"
+}
+
+variable "db-user" {
+  type = string
+  description = "User name for all database"
+  default = "yugabyte"
+}
+
+variable "db-password" {
+  type = string
+  description = "Password for all databases"
+}
