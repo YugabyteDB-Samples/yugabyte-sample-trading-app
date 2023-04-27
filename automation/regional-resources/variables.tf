@@ -62,3 +62,9 @@ variable "post-provision-commands" {
   description = "Commands to execute after provisioning the node"
   default = []
 }
+
+
+variable "tradex-env" {
+  type = string
+  description = "Environment variables file"
+}
