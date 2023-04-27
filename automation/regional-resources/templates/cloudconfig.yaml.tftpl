@@ -49,7 +49,12 @@ write_files:
   defer: true
   content: |+
     ${indent(4, tls-ca-pem)}
-
+- path: /home/ubuntu/tradex.env
+  owner: ubuntu:ubuntu
+  permissions: "0600"
+  defer: true
+  content: |+
+    ${indent(4, tradex-env)}
 
 runcmd:
 %{ for cmd in post-provision-commands ~}
