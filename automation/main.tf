@@ -1,17 +1,4 @@
-terraform {
-  required_version = "~> 1.3.2"
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-    acme = {
-      source = "vancluever/acme"
-    }
-    pkcs12 = {
-      source = "chilicat/pkcs12"
-    }
-  }
-}
+
 
 locals {
   dir = path.module
@@ -37,6 +24,7 @@ module "Boston" {
   tls-cert-pem            = local_file.tls-certificate-pem.content
   tls-ca-pem              = local_file.tls-ca-pem.content
   tls-pkcs                = local_file.tls-pkcs12.content_base64
+  tradex-env              = local.tradex-env.boston
   post-provision-commands = var.post-provision-commands
 }
 
@@ -55,6 +43,7 @@ module "Washington" {
   tls-cert-pem            = local_file.tls-certificate-pem.content
   tls-ca-pem              = local_file.tls-ca-pem.content
   tls-pkcs                = local_file.tls-pkcs12.content_base64
+  tradex-env              = local.tradex-env.washington
   post-provision-commands = var.post-provision-commands
 }
 
@@ -74,6 +63,7 @@ module "Mumbai" {
   tls-cert-pem            = local_file.tls-certificate-pem.content
   tls-ca-pem              = local_file.tls-ca-pem.content
   tls-pkcs                = local_file.tls-pkcs12.content_base64
+  tradex-env              = local.tradex-env.mumbai
   post-provision-commands = var.post-provision-commands
 }
 
@@ -93,6 +83,7 @@ module "Sydney" {
   tls-cert-pem            = local_file.tls-certificate-pem.content
   tls-ca-pem              = local_file.tls-ca-pem.content
   tls-pkcs                = local_file.tls-pkcs12.content_base64
+  tradex-env              = local.tradex-env.sydney
   post-provision-commands = var.post-provision-commands
 }
 
@@ -112,6 +103,7 @@ module "London" {
   tls-cert-pem            = local_file.tls-certificate-pem.content
   tls-ca-pem              = local_file.tls-ca-pem.content
   tls-pkcs                = local_file.tls-pkcs12.content_base64
+  tradex-env              = local.tradex-env.london
   post-provision-commands = var.post-provision-commands
 }
 
