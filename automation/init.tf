@@ -11,7 +11,13 @@ terraform {
       source = "chilicat/pkcs12"
     }
   }
+  backend "s3" {
+    bucket = "tradex-terraform-state"
+    key    = "yr"
+    region = "us-east-2"
+  }
 }
+
 
 
 locals {
