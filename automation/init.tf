@@ -58,3 +58,31 @@ locals {
     sydney =  templatefile("${path.module}/templates/tradex-env.properties", merge(local.default-tradex-env, {APP_INSTANCE_LOCATION = "SYDNEY"}))
   }
 }
+
+
+
+data "aws_vpc" "Boston" {
+  id = var.vpc-mapping.Boston.vpc
+  provider = aws.Boston
+}
+
+data "aws_vpc" "Washington" {
+  id = var.vpc-mapping.Washington.vpc
+  provider = aws.Washington
+}
+
+
+data "aws_vpc" "London" {
+  id = var.vpc-mapping.London.vpc
+  provider = aws.London
+}
+
+data "aws_vpc" "Mumbai" {
+  id = var.vpc-mapping.Mumbai.vpc
+  provider = aws.Mumbai
+}
+
+data "aws_vpc" "Sydney" {
+  id = var.vpc-mapping.Sydney.vpc
+  provider = aws.Sydney
+}
