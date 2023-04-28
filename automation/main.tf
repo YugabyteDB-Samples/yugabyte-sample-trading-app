@@ -4,9 +4,13 @@ locals {
   dir = path.module
   admin-cidrs = concat(
     var.additional-admin-workstation-cidrs,
-    ["${local.workstation-ip}/32"]
+    ["${local.workstation-ip}/32"],
+    data.aws_vpc.Boston.cidr_block_associations.*.cidr_block,
+    data.aws_vpc.Washington.cidr_block_associations.*.cidr_block,
+    data.aws_vpc.London.cidr_block_associations.*.cidr_block,
+    data.aws_vpc.Mumbai.cidr_block_associations.*.cidr_block,
+    data.aws_vpc.Sydney.cidr_block_associations.*.cidr_block
   )
-
 }
 
 
